@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="780" viewBox="0 0 1200 780" role="img" aria-labelledby="title desc">
+  <title id="title">Pythagoras' theorem</title>
+  <desc id="desc">A right-angled triangle labelled with sides a and b, hypotenuse c, and the symbolic relationship a squared plus b squared equals c squared. The illustration contains no worked numerical example.</desc>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FBF8EE"/>
+      <stop offset="1" stop-color="#F0F2E5"/>
+    </linearGradient>
+    <linearGradient id="sage" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#DDE9D8"/>
+      <stop offset="1" stop-color="#C6D9C3"/>
+    </linearGradient>
+    <linearGradient id="lime" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E8F0B3"/>
+      <stop offset="1" stop-color="#D1E184"/>
+    </linearGradient>
+    <style>
+      .ink { fill: #244638; }
+      .muted { fill: #657967; }
+      .title { font-family: Georgia, 'Times New Roman', serif; font-size: 48px; font-weight: 700; }
+      .label { font-family: Inter, Arial, sans-serif; font-size: 21px; font-weight: 650; }
+      .math { font-family: Georgia, 'Times New Roman', serif; font-size: 43px; }
+      .line { fill: none; stroke: #315846; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+      .pulse { animation: gentlePulse 2.8s ease-in-out infinite; }
+      .draw { stroke-dasharray: 700; stroke-dashoffset: 700; animation: revealLine 2.4s ease-out .2s forwards; }
+      @keyframes gentlePulse { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
+      @keyframes revealLine { to { stroke-dashoffset: 0; } }
+      @media (prefers-reduced-motion: reduce) { .pulse, .draw { animation: none; stroke-dashoffset: 0; opacity: 1; } }
+    </style>
+  </defs>
+  <rect width="1200" height="780" fill="url(#paper)"/>
+  <circle cx="1080" cy="112" r="84" fill="#E2EBC6" opacity=".34"/>
+  <circle cx="1040" cy="140" r="38" fill="#D5E4B6" opacity=".32"/>
+  <circle cx="100" cy="690" r="55" fill="#E3EACC" opacity=".34"/>
+
+  <text x="64" y="112" class="title ink">Pythagoras' theorem</text>
+
+  <!-- Main geometrically consistent right triangle. -->
+  <polygon points="300,565 300,250 720,565" fill="#FFFEF9" stroke="#315846" stroke-width="5" stroke-linejoin="round"/>
+  <line x1="300" y1="565" x2="300" y2="250" class="line"/>
+  <line x1="300" y1="565" x2="720" y2="565" stroke="#78964D" stroke-width="7" stroke-linecap="round"/>
+  <line x1="300" y1="250" x2="720" y2="565" stroke="#B58E3E" stroke-width="7" stroke-linecap="round" class="draw"/>
+
+  <!-- Right-angle marker -->
+  <path d="M300 525 H340 V565" fill="none" stroke="#244638" stroke-width="3"/>
+  <circle cx="300" cy="565" r="8" fill="#244638"/>
+  <circle cx="300" cy="250" r="7" fill="#244638"/>
+  <circle cx="720" cy="565" r="7" fill="#244638"/>
+
+  <!-- Meaningful labels attached to the relevant geometry. -->
+  <rect x="188" y="388" width="92" height="42" rx="20" fill="#E0EBDD" stroke="#B5C9B2"/>
+  <text x="234" y="416" text-anchor="middle" class="label ink">Side a</text>
+  <rect x="460" y="585" width="92" height="42" rx="20" fill="#EAF0C8" stroke="#CEDB9C"/>
+  <text x="506" y="613" text-anchor="middle" class="label ink">Side b</text>
+  <rect x="545" y="344" width="170" height="44" rx="22" fill="#F7EBC8" stroke="#E5D5A5"/>
+  <text x="630" y="373" text-anchor="middle" class="label ink">Hypotenuse c</text>
+  <rect x="352" y="490" width="148" height="42" rx="20" fill="#FFFEF9" stroke="#D7E1D2"/>
+  <text x="426" y="518" text-anchor="middle" class="label ink">Right angle</text>
+  <circle cx="320" cy="545" r="8" fill="#C8D96B" class="pulse"/>
+
+  <!-- Symbolic theorem, not a numerical worked example. -->
+  <rect x="820" y="275" width="315" height="250" rx="26" fill="#FFFEF9" stroke="#DDE5D4" stroke-width="2"/>
+  <rect x="846" y="302" width="90" height="78" rx="15" fill="url(#sage)"/>
+  <rect x="950" y="302" width="90" height="78" rx="15" fill="url(#lime)"/>
+  <rect x="1054" y="302" width="55" height="78" rx="15" fill="#F7EBC8"/>
+  <text x="891" y="354" class="math ink" text-anchor="middle">a²</text>
+  <text x="995" y="354" class="math ink" text-anchor="middle">b²</text>
+  <text x="1081" y="354" class="math ink" text-anchor="middle">c²</text>
+  <text x="978" y="430" class="math ink" text-anchor="middle" font-size="31">a² + b² = c²</text>
+  <path d="M876 463 H1078" stroke="#D8E2D1" stroke-width="2" stroke-linecap="round"/>
+</svg>

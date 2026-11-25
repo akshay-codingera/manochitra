@@ -1,0 +1,996 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-25T14:29:07.307489+00:00",
+  "results": [
+    {
+      "trace_id": "29074ad4-c0ff-45bc-b223-8792dc0804c1",
+      "concept_id": "pythagoras",
+      "concept": "Pythagoras' theorem",
+      "subject": "Maths",
+      "source_text": "In a right-angled triangle, the longest side is called the hypotenuse. The square of the hypotenuse is equal to the sum of the squares of the other two sides: a² + b² = c².",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"960\" height=\"640\" viewBox=\"0 0 960 640\">\n  <title>Pythagoras' Theorem Diagram</title>\n  <desc>Educational illustration showing a right-angled triangle with side a, side b, the hypotenuse c, side squares, and the formula a squared plus b squared equals c squared.</desc>\n  \n  <style>\n    .bg { fill: #F7F4E9; }\n    .heading { font-family: Helvetica, Arial, sans-serif; font-size: 30px; font-weight: bold; fill: #1D2C25; }\n    .label { font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #1D2C25; }\n    .sublabel { font-family: Helvetica, Arial, sans-serif; font-size: 14px; fill: #244638; }\n    .formula { font-family: Helvetica, Arial, sans-serif; font-size: 26px; font-weight: bold; fill: #244638; }\n    .grid-line { stroke: #EBE5D3; stroke-width: 1; }\n    .triangle-fill { fill: #C8D96B; opacity: 0.35; }\n    .triangle-border { stroke: #244638; stroke-width: 4; fill: none; }\n    .hypotenuse-glow { stroke: #C8D96B; stroke-width: 10; fill: none; stroke-linecap: round; }\n    .hypotenuse-glow-inner { stroke: #244638; stroke-width: 4; fill: none; stroke-linecap: round; }\n    .marker-line { stroke: #244638; stroke-width: 2.5; fill: none; }\n    .callout-line { stroke: #8FA58A; stroke-width: 1.5; stroke-dasharray: 4,4; fill: none; }\n  </style>\n\n  <!-- Background Canvas -->\n  <rect x=\"0\" y=\"0\" width=\"960\" height=\"640\" class=\"bg\" />\n\n  <!-- Background Grid lines for textbook aesthetic -->\n  <line x1=\"80\" y1=\"120\" x2=\"880\" y2=\"120\" class=\"grid-line\" />\n  <line x1=\"80\" y1=\"200\" x2=\"880\" y2=\"200\" class=\"grid-line\" />\n  <line x1=\"80\" y1=\"280\" x2=\"880\" y2=\"280\" class=\"grid-line\" />\n  <line x1=\"80\" y1=\"360\" x2=\"880\" y2=\"360\" class=\"grid-line\" />\n  <line x1=\"80\" y1=\"440\" x2=\"880\" y2=\"440\" class=\"grid-line\" />\n  <line x1=\"80\" y1=\"520\" x2=\"880\" y2=\"520\" class=\"grid-line\" />\n\n  <!-- Topic Heading -->\n  <text x=\"60\" y=\"70\" class=\"heading\" textLength=\"340\">Pythagoras' Theorem</text>\n\n  <!-- Side square representations -->\n  <!-- Square on side a (left): x from 240 to 360, y from 220 to 420 -->\n  <rect x=\"240\" y=\"220\" width=\"120\" height=\"200\" fill=\"#C8D96B\" opacity=\"0.25\" stroke=\"#8FA58A\" stroke-width=\"1.5\" />\n  \n  <!-- Square on side b (bottom): x from 360 to 600, y from 420 to 540 -->\n  <rect x=\"360\" y=\"420\" width=\"240\" height=\"120\" fill=\"#C8D96B\" opacity=\"0.25\" stroke=\"#8FA58A\" stroke-width=\"1.5\" />\n\n  <!-- Main Right-Angled Triangle -->\n  <polygon points=\"360,220 360,420 600,420\" class=\"triangle-fill\" />\n  \n  <!-- Highly Visible Animated Hypotenuse Pulse Highlight -->\n  <!-- Using multiple glowing layers with distinct opacities for vivid visual feedback -->\n  <line x1=\"360\" y1=\"220\" x2=\"600\" y2=\"420\" class=\"hypotenuse-glow\">\n    <animate attributeName=\"opacity\" values=\"0.1;0.9;0.1\" dur=\"2s\" repeatCount=\"indefinite\" />\n  </line>\n  <line x1=\"360\" y1=\"220\" x2=\"600\" y2=\"420\" class=\"triangle-border\" />\n\n  <!-- Right angle square marker -->\n  <polyline points=\"360,392 388,392 388,420\" class=\"marker-line\" />\n\n  <!-- Labels and Callouts -->\n  \n  <!-- Callout for Right Angle -->\n  <line x1=\"374\" y1=\"406\" x2=\"310\" y2=\"460\" class=\"callout-line\" />\n  <circle cx=\"374\" cy=\"406\" r=\"4\" fill=\"#244638\" />\n  <text x=\"240\" y=\"475\" class=\"label\" textLength=\"94\">Right angle</text>\n\n  <!-- Callout for Side a -->\n  <line x1=\"360\" y1=\"320\" x2=\"275\" y2=\"320\" class=\"callout-line\" />\n  <circle cx=\"360\" cy=\"320\" r=\"4\" fill=\"#244638\" />\n  <text x=\"215\" y=\"325\" class=\"label\" textLength=\"48\">Side a</text>\n  <text x=\"210\" y=\"345\" class=\"sublabel\" textLength=\"58\">(Height)</text>\n\n  <!-- Callout for Side b -->\n  <line x1=\"480\" y1=\"420\" x2=\"480\" y2=\"480\" class=\"callout-line\" />\n  <circle cx=\"480\" cy=\"420\" r=\"4\" fill=\"#244638\" />\n  <text x=\"445\" y=\"505\" class=\"label\" textLength=\"48\">Side b</text>\n  <text x=\"440\" y=\"525\" class=\"sublabel\" textLength=\"55\">(Base)</text>\n\n  <!-- Callout for Hypotenuse -->\n  <line x1=\"480\" y1=\"320\" x2=\"560\" y2=\"260\" class=\"callout-line\" />\n  <circle cx=\"480\" cy=\"320\" r=\"4\" fill=\"#244638\" />\n  <text x=\"570\" y=\"255\" class=\"label\" textLength=\"101\">Hypotenuse</text>\n  <text x=\"570\" y=\"275\" class=\"sublabel\" textLength=\"125\">(Longest side, c)</text>\n\n  <!-- Formula Box Area -->\n  <rect x=\"640\" y=\"340\" width=\"260\" height=\"120\" rx=\"8\" ry=\"8\" fill=\"#FFFFFF\" stroke=\"#8FA58A\" stroke-width=\"2\" opacity=\"0.95\" />\n  <text x=\"670\" y=\"380\" class=\"sublabel\" textLength=\"178\">Relationship in triangle:</text>\n  <text x=\"670\" y=\"424\" class=\"formula\" textLength=\"156\">a² + b² = c²</text>\n\n</svg>",
+      "model": "gemini-3.5-flash-lite",
+      "usage": {
+        "input_tokens": 4037,
+        "output_tokens": 1976,
+        "thinking_tokens": 0,
+        "metadata_available": true
+      },
+      "cost": {
+        "estimated_cost_usd": 0.0,
+        "paid_equivalent_cost_usd": 0.0061511,
+        "billing_tier": "free",
+        "pricing_version": "2026-11-25-v1",
+        "pricing_effective_date": "2026-11-25",
+        "usage_metadata_available": true,
+        "input_tokens": 4037,
+        "output_tokens": 1976,
+        "input_rate_per_million": 0.3,
+        "output_rate_per_million": 2.5,
+        "pricing_assumption": "Gemini 3.5 Flash-Lite standard reference rates ($0.30 in / $2.50 out per 1M tokens; source: Google AI Studio pricing schedule (checked Nov 2026))"
+      },
+      "retries": {
+        "api_retries": 3,
+        "validation_retries": 0,
+        "total_retries": 3
+      },
+      "checks": {
+        "valid_svg": {
+          "passed": true,
+          "detail": "SVG is well-formed XML with a supported <svg> root and safe elements."
+        },
+        "within_viewbox": {
+          "passed": true,
+          "detail": "All 32 supported visible elements fit inside the viewBox."
+        },
+        "title_and_labels": {
+          "passed": true,
+          "detail": "A non-empty <title>/<desc>, top-left 'Pythagoras' theorem' heading and 9 visible explanatory labels were found."
+        },
+        "has_animation": {
+          "passed": true,
+          "detail": "At least one SMIL/CSS animation is attached to visible elements and uses only safe properties."
+        },
+        "scientific_terms": {
+          "passed": true,
+          "detail": "Matched 5/5 required terms; 4 needed. Found: hypotenuse, right angle, a², b², c²."
+        },
+        "concept_structure": {
+          "passed": true,
+          "detail": "Right-angled triangle verified (a=200.0, b=240.0, c=312.4), right angle at (360.0, 420.0), hypotenuse identified, and formula present.",
+          "metrics": {
+            "side_a": 200.0,
+            "side_b": 240.0,
+            "side_c": 312.41,
+            "pyth_error_pct": 0.0
+          }
+        }
+      },
+      "visual_quality": {
+        "passed": true,
+        "checks": {
+          "text_margins": {
+            "passed": true,
+            "detail": "All 10 text labels sit safely within conservative 24.0px canvas margins.",
+            "metrics": {
+              "label_count": 10,
+              "margin_px": 24.0
+            }
+          },
+          "no_overlapping_labels": {
+            "passed": true,
+            "detail": "Zero overlapping labels detected across 10 text elements.",
+            "metrics": {
+              "overlap_count": 0,
+              "labels_checked": 10
+            }
+          },
+          "leader_line_accuracy": {
+            "passed": true,
+            "detail": "Verified 4 callout leader line(s) with valid physical endpoints.",
+            "metrics": {
+              "leader_line_count": 4
+            }
+          },
+          "label_geometry_clearance": {
+            "passed": true,
+            "detail": "Key geometric focal points have clear breathing room without obscuring text.",
+            "metrics": {
+              "focal_points_checked": 1
+            }
+          },
+          "animation_dynamics": {
+            "passed": true,
+            "detail": "Animation is visibly active, bound to visible elements, with meaningful dynamic changes.",
+            "metrics": {
+              "smil_animated_count": 1,
+              "has_css_keyframes": false
+            }
+          },
+          "canvas_balance": {
+            "passed": true,
+            "detail": "Diagram geometry is well-balanced (660.0x320.0px, centroid at (570.0, 380.0)).",
+            "metrics": {
+              "span_width": 660.0,
+              "span_height": 320.0,
+              "centroid_x": 570.0,
+              "centroid_y": 380.0
+            }
+          }
+        },
+        "review_requirements": [
+          "Confirm leader lines terminate on the exact intended physical boundary.",
+          "Verify visual hierarchy, font legibility and aesthetic balance.",
+          "Check animation pacing and clarity in both Daylight and Night themes.",
+          "Confirm no visual clipping occurs in small viewports."
+        ]
+      },
+      "status": "PASS",
+      "review_status": "approved",
+      "latency_ms": 34521.59,
+      "timings_ms": {
+        "prompt_build_ms": 0.03,
+        "model_request_with_retries_ms": 34519.06,
+        "svg_validation_ms": 1.89,
+        "concept_structure_ms": 0.15,
+        "visual_quality_ms": 0.28,
+        "validation_ms": 2.31
+      },
+      "generated_at": "2026-11-25T09:50:40.322696+00:00",
+      "last_error": null,
+      "attempt_history": [
+        {
+          "attempt": 1,
+          "model": "gemini-3.5-flash-lite",
+          "checks": {
+            "valid_svg": {
+              "passed": true,
+              "detail": "SVG is well-formed XML with a supported <svg> root and safe elements."
+            },
+            "within_viewbox": {
+              "passed": true,
+              "detail": "All 32 supported visible elements fit inside the viewBox."
+            },
+            "title_and_labels": {
+              "passed": true,
+              "detail": "A non-empty <title>/<desc>, top-left 'Pythagoras' theorem' heading and 9 visible explanatory labels were found."
+            },
+            "has_animation": {
+              "passed": true,
+              "detail": "At least one SMIL/CSS animation is attached to visible elements and uses only safe properties."
+            },
+            "scientific_terms": {
+              "passed": true,
+              "detail": "Matched 5/5 required terms; 4 needed. Found: hypotenuse, right angle, a², b², c²."
+            },
+            "concept_structure": {
+              "passed": true,
+              "detail": "Right-angled triangle verified (a=200.0, b=240.0, c=312.4), right angle at (360.0, 420.0), hypotenuse identified, and formula present.",
+              "metrics": {
+                "side_a": 200.0,
+                "side_b": 240.0,
+                "side_c": 312.41,
+                "pyth_error_pct": 0.0
+              }
+            }
+          },
+          "passed": true,
+          "visual_quality": {
+            "passed": true,
+            "checks": {
+              "text_margins": {
+                "passed": true,
+                "detail": "All 10 text labels sit safely within conservative 24.0px canvas margins.",
+                "metrics": {
+                  "label_count": 10,
+                  "margin_px": 24.0
+                }
+              },
+              "no_overlapping_labels": {
+                "passed": true,
+                "detail": "Zero overlapping labels detected across 10 text elements.",
+                "metrics": {
+                  "overlap_count": 0,
+                  "labels_checked": 10
+                }
+              },
+              "leader_line_accuracy": {
+                "passed": true,
+                "detail": "Verified 4 callout leader line(s) with valid physical endpoints.",
+                "metrics": {
+                  "leader_line_count": 4
+                }
+              },
+              "label_geometry_clearance": {
+                "passed": true,
+                "detail": "Key geometric focal points have clear breathing room without obscuring text.",
+                "metrics": {
+                  "focal_points_checked": 1
+                }
+              },
+              "animation_dynamics": {
+                "passed": true,
+                "detail": "Animation is visibly active, bound to visible elements, with meaningful dynamic changes.",
+                "metrics": {
+                  "smil_animated_count": 1,
+                  "has_css_keyframes": false
+                }
+              },
+              "canvas_balance": {
+                "passed": true,
+                "detail": "Diagram geometry is well-balanced (660.0x320.0px, centroid at (570.0, 380.0)).",
+                "metrics": {
+                  "span_width": 660.0,
+                  "span_height": 320.0,
+                  "centroid_x": 570.0,
+                  "centroid_y": 380.0
+                }
+              }
+            },
+            "review_requirements": [
+              "Confirm leader lines terminate on the exact intended physical boundary.",
+              "Verify visual hierarchy, font legibility and aesthetic balance.",
+              "Check animation pacing and clarity in both Daylight and Night themes.",
+              "Confirm no visual clipping occurs in small viewports."
+            ]
+          }
+        }
+      ],
+      "prompt_version": "science-svg-feedback-revision-v1",
+      "regeneration_metadata": {
+        "from_version": 1,
+        "feedback": "The animation needs to be more visible. Please make the hypotenuse pulse highlight and side tracing clearly prominent and dynamic.",
+        "prompt_type": "feedback_revision"
+      },
+      "version": 2,
+      "rejection_reason": null,
+      "reviewed_at": "2026-11-25T09:58:17.306592+00:00",
+      "approval_note": "Approved by reviewer."
+    },
+    {
+      "version": 1,
+      "concept_id": "circle",
+      "concept": "Parts of a circle",
+      "subject": "Maths",
+      "source_text": "A circle has a centre. The radius is the distance from the centre to the edge. The diameter goes across the circle through the centre and is twice the radius. The circumference is the distance around the circle.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"960\" height=\"640\" viewBox=\"0 0 960 640\">\n  <title>Parts of a Circle</title>\n  <desc>Educational illustration showing the centre, radius, diameter, and circumference of a circle for GCSE learners.</desc>\n\n  <style>\n    text {\n      font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;\n      fill: #1D2C25;\n    }\n    .heading {\n      font-size: 28px;\n      font-weight: 700;\n      letter-spacing: -0.5px;\n    }\n    .label {\n      font-size: 16px;\n      font-weight: 600;\n    }\n    .formula-title {\n      font-size: 14px;\n      font-weight: 600;\n      fill: #8FA58A;\n    }\n    .formula-val {\n      font-size: 22px;\n      font-weight: 700;\n    }\n    @keyframes pulse {\n      0% { opacity: 0.4; }\n      50% { opacity: 1; }\n      100% { opacity: 0.4; }\n    }\n    .pulsing-line {\n      animation: pulse 3s infinite ease-in-out;\n    }\n  </style>\n\n  <!-- Background Canvas -->\n  <rect x=\"0\" y=\"0\" width=\"960\" height=\"640\" fill=\"#F7F4E9\" />\n\n  <!-- Top-left Concept Heading -->\n  <text x=\"56\" y=\"64\" class=\"heading\">Parts of a circle</text>\n\n  <!-- Main Circle and Geometric Construction -->\n  <circle id=\"main_circle\" cx=\"480\" cy=\"340\" r=\"180\" fill=\"#C8D96B\" fill-opacity=\"0.12\" stroke=\"#244638\" stroke-width=\"3\" />\n\n  <!-- Diameter Line -->\n  <line id=\"diameter_line\" x1=\"300\" y1=\"340\" x2=\"660\" y2=\"340\" stroke=\"#244638\" stroke-width=\"2.5\" />\n\n  <!-- Radius Line with Animation -->\n  <line id=\"radius_line\" x1=\"480\" y1=\"340\" x2=\"607\" y2=\"213\" stroke=\"#244638\" stroke-width=\"2.5\" class=\"pulsing-line\">\n    <animate attributeName=\"opacity\" values=\"0.4;1;0.4\" dur=\"3s\" repeatCount=\"indefinite\" />\n  </line>\n\n  <!-- Circle Centre Point -->\n  <circle id=\"circle_centre\" cx=\"480\" cy=\"340\" r=\"5\" fill=\"#244638\" />\n\n  <!-- Circumference Anchor Point -->\n  <circle cx=\"607\" cy=\"467\" r=\"4\" fill=\"#244638\" />\n\n  <!-- Circumference Leader Line -->\n  <line x1=\"607\" y1=\"467\" x2=\"720\" y2=\"520\" stroke=\"#8FA58A\" stroke-width=\"1.5\" stroke-dasharray=\"4,4\" />\n\n  <!-- Formula Callout Box -->\n  <rect x=\"680\" y=\"160\" width=\"220\" height=\"90\" rx=\"8\" fill=\"#F7F4E9\" stroke=\"#8FA58A\" stroke-width=\"1.5\" />\n  <text x=\"715\" y=\"195\" class=\"formula-title\" textLength=\"150\" lengthAdjust=\"spacingAndGlyphs\">Diameter formula</text>\n  <text x=\"765\" y=\"232\" class=\"formula-val\" textLength=\"50\" lengthAdjust=\"spacingAndGlyphs\">d = 2r</text>\n\n  <!-- Labels -->\n  <!-- Centre Label -->\n  <text x=\"430\" y=\"380\" class=\"label\" textLength=\"52\" lengthAdjust=\"spacingAndGlyphs\">Centre</text>\n\n  <!-- Radius Label -->\n  <text x=\"545\" y=\"260\" class=\"label\" textLength=\"50\" lengthAdjust=\"spacingAndGlyphs\">Radius</text>\n\n  <!-- Diameter Label -->\n  <text x=\"445\" y=\"325\" class=\"label\" textLength=\"76\" lengthAdjust=\"spacingAndGlyphs\">Diameter</text>\n\n  <!-- Circumference Label -->\n  <text x=\"730\" y=\"525\" class=\"label\" textLength=\"118\" lengthAdjust=\"spacingAndGlyphs\">Circumference</text>\n\n</svg>",
+      "model": "gemini-3.5-flash-lite",
+      "usage": {
+        "input_tokens": 3433,
+        "output_tokens": 2260,
+        "thinking_tokens": 0,
+        "metadata_available": true
+      },
+      "cost": {
+        "estimated_cost_usd": 0.0,
+        "paid_equivalent_cost_usd": 0.0066799,
+        "billing_tier": "free",
+        "pricing_version": "2026-11-25-v1",
+        "pricing_effective_date": "2026-11-25",
+        "usage_metadata_available": true,
+        "input_tokens": 3433,
+        "output_tokens": 2260,
+        "input_rate_per_million": 0.3,
+        "output_rate_per_million": 2.5,
+        "pricing_assumption": "Gemini 3.5 Flash-Lite standard reference rates ($0.30 in / $2.50 out per 1M tokens; source: Google AI Studio pricing schedule (checked Nov 2026))"
+      },
+      "retries": {
+        "api_retries": 1,
+        "validation_retries": 1,
+        "total_retries": 2
+      },
+      "checks": {
+        "valid_svg": {
+          "passed": true,
+          "detail": "SVG is well-formed XML with a supported <svg> root and safe elements."
+        },
+        "within_viewbox": {
+          "passed": true,
+          "detail": "All 15 supported visible elements fit inside the viewBox."
+        },
+        "title_and_labels": {
+          "passed": true,
+          "detail": "A non-empty <title>/<desc>, top-left 'Parts of a circle' heading and 6 visible explanatory labels were found."
+        },
+        "has_animation": {
+          "passed": true,
+          "detail": "At least one SMIL/CSS animation is attached to visible elements and uses only safe properties."
+        },
+        "scientific_terms": {
+          "passed": true,
+          "detail": "Matched 4/4 required terms; 4 needed. Found: centre, radius, diameter, circumference."
+        },
+        "concept_structure": {
+          "passed": true,
+          "detail": "Circle geometry verified: Centre (480.0, 340.0), Radius line (179.6px), Diameter line (360.0px = 2r ±0.2%), and Circumference verified.",
+          "metrics": {
+            "radius": 180.0,
+            "radius_line": 179.61,
+            "diameter_line": 360.0
+          }
+        }
+      },
+      "visual_quality": {
+        "passed": true,
+        "checks": {
+          "text_margins": {
+            "passed": true,
+            "detail": "All 7 text labels sit safely within conservative 24.0px canvas margins.",
+            "metrics": {
+              "label_count": 7,
+              "margin_px": 24.0
+            }
+          },
+          "no_overlapping_labels": {
+            "passed": true,
+            "detail": "Zero overlapping labels detected across 7 text elements.",
+            "metrics": {
+              "overlap_count": 0,
+              "labels_checked": 7
+            }
+          },
+          "leader_line_accuracy": {
+            "passed": true,
+            "detail": "Verified 1 callout leader line(s) with valid physical endpoints.",
+            "metrics": {
+              "leader_line_count": 1
+            }
+          },
+          "label_geometry_clearance": {
+            "passed": true,
+            "detail": "Key geometric focal points have clear breathing room without obscuring text.",
+            "metrics": {
+              "focal_points_checked": 2
+            }
+          },
+          "animation_dynamics": {
+            "passed": true,
+            "detail": "Animation is visibly active, bound to visible elements, with meaningful dynamic changes.",
+            "metrics": {
+              "smil_animated_count": 1,
+              "has_css_keyframes": true
+            }
+          },
+          "canvas_balance": {
+            "passed": true,
+            "detail": "Diagram geometry is well-balanced (600.0x360.0px, centroid at (600.0, 340.0)).",
+            "metrics": {
+              "span_width": 600.0,
+              "span_height": 360.0,
+              "centroid_x": 600.0,
+              "centroid_y": 340.0
+            }
+          }
+        },
+        "review_requirements": [
+          "Confirm leader lines terminate on the exact intended physical boundary.",
+          "Verify visual hierarchy, font legibility and aesthetic balance.",
+          "Check animation pacing and clarity in both Daylight and Night themes.",
+          "Confirm no visual clipping occurs in small viewports."
+        ]
+      },
+      "status": "PASS",
+      "latency_ms": 13516.37,
+      "timings_ms": {
+        "prompt_build_ms": 0.03,
+        "model_request_with_retries_ms": 13509.91,
+        "svg_validation_ms": 4.49,
+        "concept_structure_ms": 0.46,
+        "visual_quality_ms": 1.25,
+        "validation_ms": 6.19
+      },
+      "generated_at": "2026-11-25T08:58:40.173538+00:00",
+      "review_status": "approved",
+      "rejection_reason": "improve the animation in it , and make some visible animation in it and that image looks empty",
+      "regeneration_metadata": null,
+      "reviewed_at": "2026-11-25T14:29:07.216534+00:00",
+      "approval_note": "Approved by reviewer."
+    },
+    {
+      "version": 1,
+      "concept_id": "series-circuit",
+      "concept": "Series circuit",
+      "subject": "Physics",
+      "source_text": "In a series circuit there is only one loop. The current is the same everywhere in the loop. The voltage of the cell is shared between the components.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"960\" height=\"640\" viewBox=\"0 0 960 640\">\n  <title>Series Circuit GCSE Physics Diagram</title>\n  <desc>A precise scientific illustration of a series circuit showing a single loop, current flow, shared voltage, and a cell.</desc>\n\n  <style>\n    .bg { fill: #F7F4E9; }\n    .heading { font-family: system-ui, -apple-system, sans-serif; font-size: 26px; font-weight: bold; fill: #1D2C25; }\n    .label { font-family: system-ui, -apple-system, sans-serif; font-size: 15px; fill: #1D2C25; font-weight: 500; }\n    .subtext { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; fill: #8FA58A; }\n    .wire { stroke: #244638; stroke-width: 4; fill: none; }\n    .flow { stroke: #C8D96B; stroke-width: 4; fill: none; stroke-dasharray: 16, 24; }\n    .callout-line { stroke: #8FA58A; stroke-width: 1.5; stroke-dasharray: 4, 4; fill: none; }\n  </style>\n\n  <!-- Background Canvas -->\n  <rect x=\"0\" y=\"0\" width=\"960\" height=\"640\" class=\"bg\" />\n\n  <!-- Main Topic Heading -->\n  <text x=\"48\" y=\"55\" class=\"heading\" textLength=\"210\" lengthAdjust=\"spacingAndGlyphs\">Series Circuit</text>\n\n  <!-- Circuit Diagram Group -->\n  <g id=\"circuit\">\n    <!-- Base Wire Loop -->\n    <rect id=\"circuit_loop\" x=\"180\" y=\"160\" width=\"600\" height=\"320\" rx=\"16\" class=\"wire\" />\n\n    <!-- Animated Current Flow Overlay (Path-following stroke-dashoffset) -->\n    <rect x=\"180\" y=\"160\" width=\"600\" height=\"320\" rx=\"16\" class=\"flow\">\n      <animate attributeName=\"stroke-dashoffset\" from=\"0\" to=\"-80\" dur=\"2s\" repeatCount=\"indefinite\" />\n    </rect>\n\n    <!-- DC Cell / Battery -->\n    <g id=\"battery\">\n      <rect x=\"156\" y=\"285\" width=\"48\" height=\"70\" fill=\"#F7F4E9\" stroke=\"#244638\" stroke-width=\"2\" rx=\"4\" />\n      <line x1=\"168\" y1=\"305\" x2=\"192\" y2=\"305\" stroke=\"#244638\" stroke-width=\"4\" />\n      <line x1=\"174\" y1=\"320\" x2=\"186\" y2=\"320\" stroke=\"#244638\" stroke-width=\"2\" />\n      <line x1=\"168\" y1=\"335\" x2=\"192\" y2=\"335\" stroke=\"#244638\" stroke-width=\"4\" />\n      <line x1=\"174\" y1=\"350\" x2=\"186\" y2=\"350\" stroke=\"#244638\" stroke-width=\"2\" />\n      <text x=\"136\" y=\"278\" font-family=\"system-ui, sans-serif\" font-size=\"20\" font-weight=\"bold\" fill=\"#244638\">+</text>\n      <text x=\"140\" y=\"380\" font-family=\"system-ui, sans-serif\" font-size=\"22\" font-weight=\"bold\" fill=\"#244638\">-</text>\n    </g>\n\n    <!-- Series Component: Lamp 1 -->\n    <g id=\"lamp1\">\n      <circle cx=\"380\" cy=\"160\" r=\"18\" fill=\"#F7F4E9\" stroke=\"#244638\" stroke-width=\"3\" />\n      <line x1=\"367\" y1=\"147\" x2=\"393\" y2=\"173\" stroke=\"#244638\" stroke-width=\"2\" />\n      <line x1=\"393\" y1=\"147\" x2=\"367\" y2=\"173\" stroke=\"#244638\" stroke-width=\"2\" />\n    </g>\n\n    <!-- Series Component: Lamp 2 -->\n    <g id=\"lamp2\">\n      <circle cx=\"580\" cy=\"160\" r=\"18\" fill=\"#F7F4E9\" stroke=\"#244638\" stroke-width=\"3\" />\n      <line x1=\"567\" y1=\"147\" x2=\"593\" y2=\"173\" stroke=\"#244638\" stroke-width=\"2\" />\n      <line x1=\"593\" y1=\"147\" x2=\"567\" y2=\"173\" stroke=\"#244638\" stroke-width=\"2\" />\n    </g>\n  </g>\n\n  <!-- Explanatory Labels & Callouts -->\n  <g id=\"annotations\">\n    <!-- Cell Callout -->\n    <line x1=\"130\" y1=\"320\" x2=\"156\" y2=\"320\" class=\"callout-line\" />\n    <text x=\"60\" y=\"315\" class=\"label\">Cell</text>\n    <text x=\"60\" y=\"333\" class=\"subtext\">Power source</text>\n\n    <!-- Top Current Callout -->\n    <line x1=\"320\" y1=\"110\" x2=\"320\" y2=\"160\" class=\"callout-line\" />\n    <text x=\"240\" y=\"100\" class=\"label\">Current is the same everywhere</text>\n\n    <!-- Component Voltage Callout -->\n    <line x1=\"480\" y1=\"110\" x2=\"480\" y2=\"160\" class=\"callout-line\" />\n    <text x=\"445\" y=\"85\" class=\"label\">Voltage is shared between components</text>\n\n    <!-- Bottom Loop Callout -->\n    <line x1=\"480\" y1=\"480\" x2=\"480\" y2=\"535\" class=\"callout-line\" />\n    <text x=\"390\" y=\"555\" class=\"label\">Only one closed loop</text>\n  </g>\n\n</svg>",
+      "model": "gemini-3.5-flash-lite",
+      "usage": {
+        "input_tokens": 1958,
+        "output_tokens": 1663,
+        "thinking_tokens": 0,
+        "metadata_available": true
+      },
+      "cost": {
+        "estimated_cost_usd": 0.0,
+        "paid_equivalent_cost_usd": 0.0047449,
+        "billing_tier": "free",
+        "pricing_version": "2026-11-25-v1",
+        "pricing_effective_date": "2026-11-25",
+        "usage_metadata_available": true,
+        "input_tokens": 1958,
+        "output_tokens": 1663,
+        "input_rate_per_million": 0.3,
+        "output_rate_per_million": 2.5,
+        "pricing_assumption": "Gemini 3.5 Flash-Lite standard reference rates ($0.30 in / $2.50 out per 1M tokens; source: Google AI Studio pricing schedule (checked Nov 2026))"
+      },
+      "retries": {
+        "api_retries": 0,
+        "validation_retries": 0,
+        "total_retries": 0
+      },
+      "checks": {
+        "valid_svg": {
+          "passed": true,
+          "detail": "SVG is well-formed XML with a supported <svg> root and safe elements."
+        },
+        "within_viewbox": {
+          "passed": true,
+          "detail": "All 26 supported visible elements fit inside the viewBox."
+        },
+        "title_and_labels": {
+          "passed": true,
+          "detail": "A non-empty <title>/<desc>, top-left 'Series circuit' heading and 7 visible explanatory labels were found."
+        },
+        "has_animation": {
+          "passed": true,
+          "detail": "At least one SMIL/CSS animation is attached to visible elements and uses only safe properties."
+        },
+        "scientific_terms": {
+          "passed": true,
+          "detail": "Matched 3/4 required terms; 3 needed. Found: current, voltage, cell. Missing: one loop."
+        },
+        "concept_structure": {
+          "passed": true,
+          "detail": "Series circuit verified: single continuous loop, cell/battery, 2 series components, and current/voltage annotations verified.",
+          "metrics": {
+            "components_found": 2,
+            "closed_loop": true
+          }
+        }
+      },
+      "visual_quality": {
+        "passed": true,
+        "checks": {
+          "text_margins": {
+            "passed": true,
+            "detail": "All 8 text labels sit safely within conservative 24.0px canvas margins.",
+            "metrics": {
+              "label_count": 8,
+              "margin_px": 24.0
+            }
+          },
+          "no_overlapping_labels": {
+            "passed": true,
+            "detail": "Zero overlapping labels detected across 8 text elements.",
+            "metrics": {
+              "overlap_count": 0,
+              "labels_checked": 8
+            }
+          },
+          "leader_line_accuracy": {
+            "passed": true,
+            "detail": "Verified 4 callout leader line(s) with valid physical endpoints.",
+            "metrics": {
+              "leader_line_count": 4
+            }
+          },
+          "label_geometry_clearance": {
+            "passed": true,
+            "detail": "Key geometric focal points have clear breathing room without obscuring text.",
+            "metrics": {
+              "focal_points_checked": 0
+            }
+          },
+          "animation_dynamics": {
+            "passed": true,
+            "detail": "Animation is visibly active, bound to visible elements, with meaningful dynamic changes.",
+            "metrics": {
+              "smil_animated_count": 1,
+              "has_css_keyframes": false
+            }
+          },
+          "canvas_balance": {
+            "passed": true,
+            "detail": "Diagram geometry is well-balanced (624.0x338.0px, centroid at (468.0, 311.0)).",
+            "metrics": {
+              "span_width": 624.0,
+              "span_height": 338.0,
+              "centroid_x": 468.0,
+              "centroid_y": 311.0
+            }
+          }
+        },
+        "review_requirements": [
+          "Confirm leader lines terminate on the exact intended physical boundary.",
+          "Verify visual hierarchy, font legibility and aesthetic balance.",
+          "Check animation pacing and clarity in both Daylight and Night themes.",
+          "Confirm no visual clipping occurs in small viewports."
+        ]
+      },
+      "status": "PASS",
+      "latency_ms": 4079.22,
+      "timings_ms": {
+        "prompt_build_ms": 0.01,
+        "model_request_with_retries_ms": 4078.1,
+        "svg_validation_ms": 0.65,
+        "concept_structure_ms": 0.08,
+        "visual_quality_ms": 0.31,
+        "validation_ms": 1.05
+      },
+      "generated_at": "2026-11-25T03:57:01.003723+00:00",
+      "review_status": "approved",
+      "rejection_reason": null,
+      "regeneration_metadata": null,
+      "reviewed_at": "2026-11-25T14:29:07.286903+00:00",
+      "approval_note": "Verified continuous loop"
+    },
+    {
+      "trace_id": "f8e91252-ab58-4aef-85c1-32a3fc00c5b0",
+      "concept_id": "photosynthesis",
+      "concept": "Photosynthesis",
+      "subject": "Biology",
+      "source_text": "Plants take in carbon dioxide and water. They use light energy, absorbed by chlorophyll, to make glucose and oxygen.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"960\" height=\"640\" viewBox=\"0 0 960 640\">\n  <title>Photosynthesis Process Diagram</title>\n  <desc>A scientific illustration showing how plants use light energy, carbon dioxide, and water to produce glucose and oxygen.</desc>\n\n  <style>\n    text {\n      font-family: system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;\n      fill: #1D2C25;\n    }\n    .heading {\n      font-size: 28px;\n      font-weight: 700;\n    }\n    .label {\n      font-size: 15px;\n      font-weight: 600;\n      fill: #244638;\n    }\n    .formula {\n      font-size: 16px;\n      font-family: monospace;\n      letter-spacing: 1px;\n    }\n    .flow-line {\n      stroke-dasharray: 8 6;\n      animation: dashflow 1.5s linear infinite;\n    }\n    @keyframes dashflow {\n      from {\n        stroke-dashoffset: 28;\n      }\n      to {\n        stroke-dashoffset: 0;\n      }\n    }\n  </style>\n\n  <!-- Canvas Background -->\n  <rect x=\"0\" y=\"0\" width=\"960\" height=\"640\" fill=\"#F7F4E9\" />\n\n  <!-- Topic Heading -->\n  <text x=\"50\" y=\"55\" class=\"heading\" textLength=\"220\" lengthAdjust=\"spacingAndGlyphs\">Photosynthesis</text>\n\n  <!-- Central Leaf & Internal Structures -->\n  <g id=\"leaf_system\">\n    <ellipse id=\"leaf\" cx=\"480\" cy=\"340\" rx=\"160\" ry=\"105\" fill=\"#8FA58A\" stroke=\"#244638\" stroke-width=\"3\" />\n    <!-- Leaf Veins -->\n    <line x1=\"330\" y1=\"340\" x2=\"630\" y2=\"340\" stroke=\"#244638\" stroke-width=\"3\" />\n    <line x1=\"380\" y1=\"340\" x2=\"430\" y2=\"280\" stroke=\"#244638\" stroke-width=\"2\" />\n    <line x1=\"430\" y1=\"340\" x2=\"480\" y2=\"270\" stroke=\"#244638\" stroke-width=\"2\" />\n    <line x1=\"480\" y1=\"340\" x2=\"530\" y2=\"280\" stroke=\"#244638\" stroke-width=\"2\" />\n    <line x1=\"380\" y1=\"340\" x2=\"430\" y2=\"400\" stroke=\"#244638\" stroke-width=\"2\" />\n    <line x1=\"430\" y1=\"340\" x2=\"480\" y2=\"410\" stroke=\"#244638\" stroke-width=\"2\" />\n    <line x1=\"480\" y1=\"340\" x2=\"530\" y2=\"400\" stroke=\"#244638\" stroke-width=\"2\" />\n    \n    <!-- Chlorophyll Label inside Leaf -->\n    <text x=\"480\" y=\"315\" text-anchor=\"middle\" class=\"label\" font-size=\"13\" textLength=\"210\" lengthAdjust=\"spacingAndGlyphs\">Chlorophyll absorbs light</text>\n  </g>\n\n  <!-- Inputs Group -->\n  <!-- Sunlight / Light Energy -->\n  <g id=\"input_light\">\n    <circle cx=\"180\" cy=\"150\" r=\"28\" fill=\"#C8D96B\" stroke=\"#244638\" stroke-width=\"2\" />\n    <circle cx=\"180\" cy=\"150\" r=\"36\" fill=\"none\" stroke=\"#C8D96B\" stroke-width=\"2\">\n      <animate attributeName=\"opacity\" values=\"0.2;0.9;0.2\" dur=\"2.5s\" repeatCount=\"indefinite\" />\n    </circle>\n    <line x1=\"205\" y1=\"170\" x2=\"380\" y2=\"270\" stroke=\"#244638\" stroke-width=\"3\" />\n    <line x1=\"205\" y1=\"170\" x2=\"380\" y2=\"270\" stroke=\"#C8D96B\" stroke-width=\"3\" class=\"flow-line\" />\n    <!-- Major Animation: Moving Photon Particle -->\n    <circle cx=\"280\" cy=\"215\" r=\"4.5\" fill=\"#C8D96B\">\n      <animate attributeName=\"cx\" values=\"215;365;215\" dur=\"2s\" repeatCount=\"indefinite\" />\n      <animate attributeName=\"cy\" values=\"175;262;175\" dur=\"2s\" repeatCount=\"indefinite\" />\n    </circle>\n    <text x=\"70\" y=\"145\" class=\"label\" textLength=\"110\" lengthAdjust=\"spacingAndGlyphs\">Light energy</text>\n  </g>\n\n  <!-- Carbon Dioxide -->\n  <g id=\"input_co2\">\n    <line x1=\"180\" y1=\"340\" x2=\"320\" y2=\"340\" stroke=\"#244638\" stroke-width=\"3\" />\n    <line x1=\"180\" y1=\"340\" x2=\"320\" y2=\"340\" stroke=\"#C8D96B\" stroke-width=\"3\" class=\"flow-line\" />\n    <text x=\"50\" y=\"330\" class=\"label\" textLength=\"120\" lengthAdjust=\"spacingAndGlyphs\">Carbon dioxide</text>\n    <text x=\"50\" y=\"350\" font-size=\"13\" fill=\"#244638\" textLength=\"60\" lengthAdjust=\"spacingAndGlyphs\">(from air)</text>\n  </g>\n\n  <!-- Water -->\n  <g id=\"input_h2o\">\n    <line x1=\"220\" y1=\"490\" x2=\"380\" y2=\"400\" stroke=\"#244638\" stroke-width=\"3\" />\n    <line x1=\"220\" y1=\"490\" x2=\"380\" y2=\"400\" stroke=\"#C8D96B\" stroke-width=\"3\" class=\"flow-line\" />\n    <text x=\"110\" y=\"515\" class=\"label\" textLength=\"90\" lengthAdjust=\"spacingAndGlyphs\">Water (H₂O)</text>\n    <text x=\"110\" y=\"535\" font-size=\"13\" fill=\"#244638\" textLength=\"80\" lengthAdjust=\"spacingAndGlyphs\">(from soil)</text>\n  </g>\n\n  <!-- Outputs Group -->\n  <!-- Glucose -->\n  <g id=\"output_glucose\">\n    <line x1=\"580\" y1=\"270\" x2=\"680\" y2=\"180\" stroke=\"#244638\" stroke-width=\"3\" />\n    <line x1=\"580\" y1=\"270\" x2=\"680\" y2=\"180\" stroke=\"#C8D96B\" stroke-width=\"3\" class=\"flow-line\" />\n    <text x=\"695\" y=\"175\" class=\"label\" textLength=\"130\" lengthAdjust=\"spacingAndGlyphs\">Glucose (C₆H₁₂O₆)</text>\n  </g>\n\n  <!-- Oxygen -->\n  <g id=\"output_oxygen\">\n    <line x1=\"640\" y1=\"340\" x2=\"730\" y2=\"340\" stroke=\"#244638\" stroke-width=\"3\" />\n    <line x1=\"640\" y1=\"340\" x2=\"730\" y2=\"340\" stroke=\"#C8D96B\" stroke-width=\"3\" class=\"flow-line\" />\n    <text x=\"745\" y=\"335\" class=\"label\" textLength=\"90\" lengthAdjust=\"spacingAndGlyphs\">Oxygen (O₂)</text>\n    <text x=\"745\" y=\"355\" font-size=\"13\" fill=\"#244638\" textLength=\"110\" lengthAdjust=\"spacingAndGlyphs\">(released to air)</text>\n  </g>\n\n  <!-- Summary Equation Box -->\n  <rect x=\"270\" y=\"555\" width=\"420\" height=\"48\" rx=\"6\" fill=\"#1D2C25\" />\n  <text x=\"295\" y=\"584\" fill=\"#F7F4E9\" class=\"formula\" textLength=\"370\" lengthAdjust=\"spacingAndGlyphs\">6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂</text>\n\n</svg>",
+      "model": "gemini-3.5-flash-lite",
+      "usage": {
+        "input_tokens": 2081,
+        "output_tokens": 2153,
+        "thinking_tokens": 0,
+        "metadata_available": true
+      },
+      "cost": {
+        "estimated_cost_usd": 0.0,
+        "paid_equivalent_cost_usd": 0.0060068,
+        "billing_tier": "free",
+        "pricing_version": "2026-11-25-v1",
+        "pricing_effective_date": "2026-11-25",
+        "usage_metadata_available": true,
+        "input_tokens": 2081,
+        "output_tokens": 2153,
+        "input_rate_per_million": 0.3,
+        "output_rate_per_million": 2.5,
+        "pricing_assumption": "Gemini 3.5 Flash-Lite standard reference rates ($0.30 in / $2.50 out per 1M tokens; source: Google AI Studio pricing schedule (checked Nov 2026))"
+      },
+      "retries": {
+        "api_retries": 0,
+        "validation_retries": 0,
+        "total_retries": 0
+      },
+      "checks": {
+        "valid_svg": {
+          "passed": true,
+          "detail": "SVG is well-formed XML with a supported <svg> root and safe elements."
+        },
+        "within_viewbox": {
+          "passed": true,
+          "detail": "All 34 supported visible elements fit inside the viewBox."
+        },
+        "title_and_labels": {
+          "passed": true,
+          "detail": "A non-empty <title>/<desc>, top-left 'Photosynthesis' heading and 10 visible explanatory labels were found."
+        },
+        "has_animation": {
+          "passed": true,
+          "detail": "At least one SMIL/CSS animation is attached to visible elements and uses only safe properties."
+        },
+        "scientific_terms": {
+          "passed": true,
+          "detail": "Matched 6/6 required terms; 5 needed. Found: carbon dioxide, water, light, chlorophyll, glucose, oxygen."
+        },
+        "concept_structure": {
+          "passed": true,
+          "detail": "Photosynthesis reaction structure verified: Leaf reaction site, chlorophyll pigment, light energy, inputs (H₂O, CO₂), and products (glucose, O₂).",
+          "metrics": {
+            "inputs_verified": true,
+            "outputs_verified": true,
+            "chlorophyll_present": true
+          }
+        }
+      },
+      "visual_quality": {
+        "passed": true,
+        "checks": {
+          "text_margins": {
+            "passed": true,
+            "detail": "All 11 text labels sit safely within conservative 24.0px canvas margins.",
+            "metrics": {
+              "label_count": 11,
+              "margin_px": 24.0
+            }
+          },
+          "no_overlapping_labels": {
+            "passed": true,
+            "detail": "Zero overlapping labels detected across 11 text elements.",
+            "metrics": {
+              "overlap_count": 0,
+              "labels_checked": 11
+            }
+          },
+          "leader_line_accuracy": {
+            "passed": true,
+            "detail": "Direct label proximity layout used; no disconnected leader lines found.",
+            "metrics": {
+              "leader_line_count": 0
+            }
+          },
+          "label_geometry_clearance": {
+            "passed": true,
+            "detail": "Key geometric focal points have clear breathing room without obscuring text.",
+            "metrics": {
+              "focal_points_checked": 0
+            }
+          },
+          "animation_dynamics": {
+            "passed": true,
+            "detail": "Animation is visibly active, bound to visible elements, with meaningful dynamic changes.",
+            "metrics": {
+              "smil_animated_count": 3,
+              "has_css_keyframes": true
+            }
+          },
+          "canvas_balance": {
+            "passed": true,
+            "detail": "Diagram geometry is well-balanced (546.0x489.0px, centroid at (417.0, 358.5)).",
+            "metrics": {
+              "span_width": 546.0,
+              "span_height": 489.0,
+              "centroid_x": 417.0,
+              "centroid_y": 358.5
+            }
+          }
+        },
+        "review_requirements": [
+          "Confirm leader lines terminate on the exact intended physical boundary.",
+          "Verify visual hierarchy, font legibility and aesthetic balance.",
+          "Check animation pacing and clarity in both Daylight and Night themes.",
+          "Confirm no visual clipping occurs in small viewports."
+        ]
+      },
+      "status": "PASS",
+      "latency_ms": 7498.4,
+      "timings_ms": {
+        "prompt_build_ms": 0.01,
+        "model_request_with_retries_ms": 7495.97,
+        "svg_validation_ms": 1.62,
+        "concept_structure_ms": 0.4,
+        "visual_quality_ms": 0.33,
+        "validation_ms": 2.35
+      },
+      "generated_at": "2026-11-25T08:25:09.532206+00:00",
+      "last_error": null,
+      "attempt_history": [
+        {
+          "attempt": 1,
+          "model": "gemini-3.5-flash-lite",
+          "checks": {
+            "valid_svg": {
+              "passed": true,
+              "detail": "SVG is well-formed XML with a supported <svg> root and safe elements."
+            },
+            "within_viewbox": {
+              "passed": true,
+              "detail": "All 33 supported visible elements fit inside the viewBox."
+            },
+            "title_and_labels": {
+              "passed": true,
+              "detail": "A non-empty <title>/<desc>, top-left 'Photosynthesis' heading and 10 visible explanatory labels were found."
+            },
+            "has_animation": {
+              "passed": true,
+              "detail": "At least one SMIL/CSS animation is attached to visible elements and uses only safe properties."
+            },
+            "scientific_terms": {
+              "passed": true,
+              "detail": "Matched 6/6 required terms; 5 needed. Found: carbon dioxide, water, light, chlorophyll, glucose, oxygen."
+            },
+            "concept_structure": {
+              "passed": true,
+              "detail": "Photosynthesis reaction structure verified: Leaf reaction site, chlorophyll pigment, light energy, inputs (H₂O, CO₂), and products (glucose, O₂).",
+              "metrics": {
+                "inputs_verified": true,
+                "outputs_verified": true,
+                "chlorophyll_present": true
+              }
+            }
+          },
+          "passed": true,
+          "visual_quality": {
+            "passed": true,
+            "checks": {
+              "text_margins": {
+                "passed": true,
+                "detail": "All 11 text labels sit safely within conservative 24.0px canvas margins.",
+                "metrics": {
+                  "label_count": 11,
+                  "margin_px": 24.0
+                }
+              },
+              "no_overlapping_labels": {
+                "passed": true,
+                "detail": "Zero overlapping labels detected across 11 text elements.",
+                "metrics": {
+                  "overlap_count": 0,
+                  "labels_checked": 11
+                }
+              },
+              "leader_line_accuracy": {
+                "passed": true,
+                "detail": "Direct label proximity layout used; no disconnected leader lines found.",
+                "metrics": {
+                  "leader_line_count": 0
+                }
+              },
+              "label_geometry_clearance": {
+                "passed": true,
+                "detail": "Key geometric focal points have clear breathing room without obscuring text.",
+                "metrics": {
+                  "focal_points_checked": 0
+                }
+              },
+              "animation_dynamics": {
+                "passed": true,
+                "detail": "Animation is visibly active, bound to visible elements, with meaningful dynamic changes.",
+                "metrics": {
+                  "smil_animated_count": 1,
+                  "has_css_keyframes": true
+                }
+              },
+              "canvas_balance": {
+                "passed": true,
+                "detail": "Diagram geometry is well-balanced (546.0x489.0px, centroid at (417.0, 358.5)).",
+                "metrics": {
+                  "span_width": 546.0,
+                  "span_height": 489.0,
+                  "centroid_x": 417.0,
+                  "centroid_y": 358.5
+                }
+              }
+            },
+            "review_requirements": [
+              "Confirm leader lines terminate on the exact intended physical boundary.",
+              "Verify visual hierarchy, font legibility and aesthetic balance.",
+              "Check animation pacing and clarity in both Daylight and Night themes.",
+              "Confirm no visual clipping occurs in small viewports."
+            ]
+          }
+        }
+      ],
+      "prompt_version": "science-svg-editorial-v2"
+    },
+    {
+      "trace_id": "7eeabfc9-2980-4ec8-8e53-6c02fe0424c9",
+      "concept_id": "states-of-matter",
+      "concept": "States of matter",
+      "subject": "Chemistry",
+      "source_text": "In a solid the particles are close together and vibrate in place. In a liquid they are close but move past each other. In a gas they are far apart and move fast.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"960\" height=\"640\" viewBox=\"0 0 960 640\">\n  <title>States of Matter</title>\n  <desc>Scientific illustration showing the arrangement and motion of particles in solids, liquids, and gases for GCSE Chemistry students.</desc>\n\n  <style>\n    .bg { fill: #F7F4E9; }\n    .heading { font-family: Helvetica, Arial, sans-serif; font-size: 28px; font-weight: bold; fill: #1D2C25; }\n    .container-label { font-family: Helvetica, Arial, sans-serif; font-size: 20px; font-weight: bold; fill: #244638; text-anchor: middle; }\n    .callout-text { font-family: Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 500; fill: #1D2C25; }\n    .desc-text { font-family: Helvetica, Arial, sans-serif; font-size: 13px; fill: #244638; }\n    .solid-p { fill: #244638; }\n    .liquid-p { fill: #8FA58A; }\n    .gas-p { fill: #C8D96B; stroke: #244638; stroke-width: 2; }\n    .boundary { fill: #F7F4E9; stroke: #244638; stroke-width: 2.5; rx: 12; }\n  </style>\n\n  <!-- Background -->\n  <rect x=\"0\" y=\"0\" width=\"960\" height=\"640\" class=\"bg\" />\n\n  <!-- Main Topic Heading -->\n  <text x=\"50\" y=\"70\" class=\"heading\" textLength=\"240\" lengthAdjust=\"spacingAndGlyphs\">States of Matter</text>\n\n  <!-- Subheading / Context -->\n  <text x=\"50\" y=\"95\" class=\"desc-text\" textLength=\"500\" lengthAdjust=\"spacingAndGlyphs\">Particle arrangement and movement in solids, liquids, and gases.</text>\n\n  <!-- ==================== SOLID CONTAINER & PARTICLES ==================== -->\n  <rect id=\"solid_container\" x=\"50\" y=\"140\" width=\"260\" height=\"280\" class=\"boundary\" />\n  <text x=\"180\" y=\"175\" class=\"container-label\" textLength=\"55\" lengthAdjust=\"spacingAndGlyphs\">Solid</text>\n\n  <!-- Solid Particles (3x4 lattice = 12 particles, vibrating in place) -->\n  <!-- Row 1 -->\n  <circle cx=\"110\" cy=\"220\" r=\"14\" class=\"solid-p\"><animate attributeName=\"cx\" values=\"110;113;107;110\" dur=\"0.8s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"150\" cy=\"220\" r=\"14\" class=\"solid-p\"><animate attributeName=\"cy\" values=\"220;222;218;220\" dur=\"0.7s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"190\" cy=\"220\" r=\"14\" class=\"solid-p\"><animate attributeName=\"cx\" values=\"190;187;193;190\" dur=\"0.9s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"230\" cy=\"220\" r=\"14\" class=\"solid-p\"><animate attributeName=\"cy\" values=\"220;218;222;220\" dur=\"0.8s\" repeatCount=\"indefinite\" /></circle>\n\n  <!-- Row 2 -->\n  <circle cx=\"110\" cy=\"270\" r=\"14\" class=\"solid-p\"><animate attributeName=\"cy\" values=\"270;272;268;270\" dur=\"0.7s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"150\" cy=\"270\" r=\"14\" class=\"solid-p\"><animate attributeName=\"cx\" values=\"150;153;147;150\" dur=\"0.8s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"190\" cy=\"270\" r=\"14\" class=\"solid-p\"><animate attributeName=\"cy\" values=\"270;268;272;270\" dur=\"0.9s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"230\" cy=\"270\" r=\"14\" class=\"solid-p\"><animate attributeName=\"cx\" values=\"230;227;233;230\" dur=\"0.7s\" repeatCount=\"indefinite\" /></circle>\n\n  <!-- Row 3 -->\n  <circle cx=\"110\" cy=\"320\" r=\"14\" class=\"solid-p\"><animate attributeName=\"cx\" values=\"110;107;113;110\" dur=\"0.9s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"150\" cy=\"320\" r=\"14\" class=\"solid-p\"><animate attributeName=\"cy\" values=\"320;322;318;320\" dur=\"0.8s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"190\" cy=\"320\" r=\"14\" class=\"solid-p\"><animate attributeName=\"cx\" values=\"190;193;187;190\" dur=\"0.7s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"230\" cy=\"320\" r=\"14\" class=\"solid-p\"><animate attributeName=\"cy\" values=\"320;318;322;320\" dur=\"0.9s\" repeatCount=\"indefinite\" /></circle>\n\n\n  <!-- ==================== LIQUID CONTAINER & PARTICLES ==================== -->\n  <rect id=\"liquid_container\" x=\"350\" y=\"140\" width=\"260\" height=\"280\" class=\"boundary\" />\n  <text x=\"480\" y=\"175\" class=\"container-label\" textLength=\"60\" lengthAdjust=\"spacingAndGlyphs\">Liquid</text>\n\n  <!-- Liquid Particles (Close, moving past each other) -->\n  <!-- Row 1 -->\n  <circle cx=\"395\" cy=\"225\" r=\"14\" class=\"liquid-p\"><animate attributeName=\"cx\" values=\"395;410;395\" dur=\"3\ns\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"435\" cy=\"215\" r=\"14\" class=\"liquid-p\"><animate attributeName=\"cy\" values=\"215;230;215\" dur=\"2.5s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"475\" cy=\"225\" r=\"14\" class=\"liquid-p\"><animate attributeName=\"cx\" values=\"475;460;475\" dur=\"2.8s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"515\" cy=\"215\" r=\"14\" class=\"liquid-p\"><animate attributeName=\"cy\" values=\"215;225;215\" dur=\"3.2s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"555\" cy=\"225\" r=\"14\" class=\"liquid-p\"><animate attributeName=\"cx\" values=\"555;540;555\" dur=\"2.6s\" repeatCount=\"indefinite\" /></circle>\n\n  <!-- Row 2 -->\n  <circle cx=\"410\" cy=\"270\" r=\"14\" class=\"liquid-p\"><animate attributeName=\"cx\" values=\"410;395;410\" dur=\"2.7s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"450\" cy=\"265\" r=\"14\" class=\"liquid-p\"><animate attributeName=\"cy\" values=\"265;280;265\" dur=\"3.1s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"490\" cy=\"275\" r=\"14\" class=\"liquid-p\"><animate attributeName=\"cx\" values=\"490;505;490\" dur=\"2.4s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"530\" cy=\"265\" r=\"14\" class=\"liquid-p\"><animate attributeName=\"cy\" values=\"265;250;265\" dur=\"2.9s\" repeatCount=\"indefinite\" /></circle>\n\n  <!-- Row 3 -->\n  <circle cx=\"390\" cy=\"320\" r=\"14\" class=\"liquid-p\"><animate attributeName=\"cx\" values=\"390;405;390\" dur=\"3.3s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"435\" cy=\"325\" r=\"14\" class=\"liquid-p\"><animate attributeName=\"cy\" values=\"325;310;325\" dur=\"2.8s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"475\" cy=\"320\" r=\"14\" class=\"liquid-p\"><animate attributeName=\"cx\" values=\"475;460;475\" dur=\"2.6s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"520\" cy=\"325\" r=\"14\" class=\"liquid-p\"><animate attributeName=\"cx\" values=\"520;535;520\" dur=\"3s\" repeatCount=\"indefinite\" /></circle>\n  <circle cx=\"560\" cy=\"315\" r=\"14\" class=\"liquid-p\"><animate attributeName=\"cy\" values=\"315;330;315\" dur=\"2.5s\" repeatCount=\"indefinite\" /></circle>\n\n\n  <!-- ==================== GAS CONTAINER & PARTICLES ==================== -->\n  <rect id=\"gas_container\" x=\"650\" y=\"140\" width=\"260\" height=\"280\" class=\"boundary\" />\n  <text x=\"780\" y=\"175\" class=\"container-label\" textLength=\"35\" lengthAdjust=\"spacingAndGlyphs\">Gas</text>\n\n  <!-- Gas Particles (Far apart, moving fast in random directions) -->\n  <circle cx=\"690\" cy=\"205\" r=\"14\" class=\"gas-p\">\n    <animate attributeName=\"cx\" values=\"690;820;710;690\" dur=\"2.2s\" repeatCount=\"indefinite\" />\n    <animate attributeName=\"cy\" values=\"205;280;360;205\" dur=\"2.2s\" repeatCount=\"indefinite\" />\n  </circle>\n\n  <circle cx=\"840\" cy=\"215\" r=\"14\" class=\"gas-p\">\n    <animate attributeName=\"cx\" values=\"840;690;860;840\" dur=\"1.8s\" repeatCount=\"indefinite\" />\n    <animate attributeName=\"cy\" values=\"215;350;230;215\" dur=\"1.8s\" repeatCount=\"indefinite\" />\n  </circle>\n\n  <circle cx=\"740\" cy=\"300\" r=\"14\" class=\"gas-p\">\n    <animate attributeName=\"cx\" values=\"740;860;680;740\" dur=\"2.5s\" repeatCount=\"indefinite\" />\n    <animate attributeName=\"cy\" values=\"300;190;330;300\" dur=\"2.5s\" repeatCount=\"indefinite\" />\n  </circle>\n\n  <circle cx=\"820\" cy=\"360\" r=\"14\" class=\"gas-p\">\n    <animate attributeName=\"cx\" values=\"820;700;840;820\" dur=\"2.0s\" repeatCount=\"indefinite\" />\n    <animate attributeName=\"cy\" values=\"360;210;180;360\" dur=\"2.0s\" repeatCount=\"indefinite\" />\n  </circle>\n\n\n  <!-- ==================== EXPLANATORY CALLOUTS (BOTTOM) ==================== -->\n  <!-- Solid Callout -->\n  <line x1=\"60\" y1=\"460\" x2=\"300\" y2=\"460\" stroke=\"#8FA58A\" stroke-width=\"1.5\" />\n  <text x=\"60\" y=\"480\" class=\"callout-text\" textLength=\"200\" lengthAdjust=\"spacingAndGlyphs\">Particles close together</text>\n  <text x=\"60\" y=\"505\" class=\"desc-text\" textLength=\"210\" lengthAdjust=\"spacingAndGlyphs\">and fixed in a regular lattice.</text>\n  <text x=\"60\" y=\"525\" class=\"desc-text\" textLength=\"160\" lengthAdjust=\"spacingAndGlyphs\">Particles vibrate in place.</text>\n\n  <!-- Liquid Callout -->\n  <line x1=\"360\" y1=\"460\" x2=\"600\" y2=\"460\" stroke=\"#8FA58A\" stroke-width=\"1.5\" />\n  <text x=\"360\" y=\"480\" class=\"callout-text\" textLength=\"200\" lengthAdjust=\"spacingAndGlyphs\">Particles close, moving past</text>\n  <text x=\"360\" y=\"505\" class=\"desc-text\" textLength=\"180\" lengthAdjust=\"spacingAndGlyphs\">each other with no fixed</text>\n  <text x=\"360\" y=\"525\" class=\"desc-text\" textLength=\"75\" lengthAdjust=\"spacingAndGlyphs\">structure.</text>\n\n  <!-- Gas Callout -->\n  <line x1=\"660\" y1=\"460\" x2=\"900\" y2=\"460\" stroke=\"#8FA58A\" stroke-width=\"1.5\" />\n  <text x=\"660\" y=\"480\" class=\"callout-text\" textLength=\"160\" lengthAdjust=\"spacingAndGlyphs\">Particles far apart</text>\n  <text x=\"660\" y=\"505\" class=\"desc-text\" textLength=\"190\" lengthAdjust=\"spacingAndGlyphs\">and move fast in random</text>\n  <text x=\"660\" y=\"525\" class=\"desc-text\" textLength=\"70\" lengthAdjust=\"spacingAndGlyphs\">directions.</text>\n\n  <!-- Secondary Animation: Thermal Transition Arrow -->\n  <line x1=\"100\" y1=\"520\" x2=\"860\" y2=\"520\" stroke=\"#244638\" stroke-width=\"2.5\" stroke-dasharray=\"14, 10\">\n    <animate attributeName=\"stroke-dashoffset\" from=\"48\" to=\"0\" dur=\"2s\" repeatCount=\"indefinite\" />\n  </line>\n  <polygon points=\"860,514 876,520 860,526\" fill=\"#244638\" />\n  <text x=\"480\" y=\"555\" text-anchor=\"middle\" font-family=\"system-ui, sans-serif\" font-size=\"13\" font-weight=\"600\" fill=\"#244638\">\n    <animate attributeName=\"fill\" values=\"#8FA58A;#244638;#8FA58A\" dur=\"2s\" repeatCount=\"indefinite\" />\n    Increasing Thermal Energy &amp; Particle Motion →\n  </text>\n\n</svg>",
+      "model": "gemini-3.5-flash-lite",
+      "usage": {
+        "input_tokens": 1803,
+        "output_tokens": 3669,
+        "thinking_tokens": 0,
+        "metadata_available": true
+      },
+      "cost": {
+        "estimated_cost_usd": 0.0,
+        "paid_equivalent_cost_usd": 0.0097134,
+        "billing_tier": "free",
+        "pricing_version": "2026-11-25-v1",
+        "pricing_effective_date": "2026-11-25",
+        "usage_metadata_available": true,
+        "input_tokens": 1803,
+        "output_tokens": 3669,
+        "input_rate_per_million": 0.3,
+        "output_rate_per_million": 2.5,
+        "pricing_assumption": "Gemini 3.5 Flash-Lite standard reference rates ($0.30 in / $2.50 out per 1M tokens; source: Google AI Studio pricing schedule (checked Nov 2026))"
+      },
+      "retries": {
+        "api_retries": 0,
+        "validation_retries": 0,
+        "total_retries": 0
+      },
+      "checks": {
+        "valid_svg": {
+          "passed": true,
+          "detail": "SVG is well-formed XML with a supported <svg> root and safe elements."
+        },
+        "within_viewbox": {
+          "passed": true,
+          "detail": "All 54 supported visible elements fit inside the viewBox."
+        },
+        "title_and_labels": {
+          "passed": true,
+          "detail": "A non-empty <title>/<desc>, top-left 'States of matter' heading and 14 visible explanatory labels were found."
+        },
+        "has_animation": {
+          "passed": true,
+          "detail": "At least one SMIL/CSS animation is attached to visible elements and uses only safe properties."
+        },
+        "scientific_terms": {
+          "passed": true,
+          "detail": "Matched 5/5 required terms; 4 needed. Found: solid, liquid, gas, particles, vibrate."
+        },
+        "concept_structure": {
+          "passed": true,
+          "detail": "States of matter verified: 3 regions, Solid (ordered lattice, spacing 40.0px), Liquid (close particles 41.3px with mobile arrangement), Gas (widely separated 109.6px = 2.7x solid).",
+          "metrics": {
+            "mean_solid_spacing": 40.0,
+            "mean_liquid_spacing": 41.3,
+            "mean_gas_spacing": 109.6,
+            "solid_lattice_order": 0.0
+          }
+        }
+      },
+      "visual_quality": {
+        "passed": true,
+        "checks": {
+          "text_margins": {
+            "passed": true,
+            "detail": "All 15 text labels sit safely within conservative 24.0px canvas margins.",
+            "metrics": {
+              "label_count": 15,
+              "margin_px": 24.0
+            }
+          },
+          "no_overlapping_labels": {
+            "passed": true,
+            "detail": "Zero overlapping labels detected across 15 text elements.",
+            "metrics": {
+              "overlap_count": 0,
+              "labels_checked": 15
+            }
+          },
+          "leader_line_accuracy": {
+            "passed": true,
+            "detail": "Verified 1 callout leader line(s) with valid physical endpoints.",
+            "metrics": {
+              "leader_line_count": 1
+            }
+          },
+          "label_geometry_clearance": {
+            "passed": true,
+            "detail": "Key geometric focal points have clear breathing room without obscuring text.",
+            "metrics": {
+              "focal_points_checked": 0
+            }
+          },
+          "animation_dynamics": {
+            "passed": true,
+            "detail": "Animation is visibly active, bound to visible elements, with meaningful dynamic changes.",
+            "metrics": {
+              "smil_animated_count": 36,
+              "has_css_keyframes": false
+            }
+          },
+          "canvas_balance": {
+            "passed": true,
+            "detail": "Diagram geometry is well-balanced (860.0x386.0px, centroid at (480.0, 333.0)).",
+            "metrics": {
+              "span_width": 860.0,
+              "span_height": 386.0,
+              "centroid_x": 480.0,
+              "centroid_y": 333.0
+            }
+          }
+        },
+        "review_requirements": [
+          "Confirm leader lines terminate on the exact intended physical boundary.",
+          "Verify visual hierarchy, font legibility and aesthetic balance.",
+          "Check animation pacing and clarity in both Daylight and Night themes.",
+          "Confirm no visual clipping occurs in small viewports."
+        ]
+      },
+      "status": "PASS",
+      "latency_ms": 16040.86,
+      "timings_ms": {
+        "prompt_build_ms": 0.02,
+        "model_request_with_retries_ms": 16030.77,
+        "svg_validation_ms": 7.97,
+        "concept_structure_ms": 0.44,
+        "visual_quality_ms": 1.44,
+        "validation_ms": 9.86
+      },
+      "generated_at": "2026-11-25T08:58:18.698504+00:00",
+      "last_error": null,
+      "attempt_history": [
+        {
+          "attempt": 1,
+          "model": "gemini-3.5-flash-lite",
+          "checks": {
+            "valid_svg": {
+              "passed": true,
+              "detail": "SVG is well-formed XML with a supported <svg> root and safe elements."
+            },
+            "within_viewbox": {
+              "passed": true,
+              "detail": "All 51 supported visible elements fit inside the viewBox."
+            },
+            "title_and_labels": {
+              "passed": true,
+              "detail": "A non-empty <title>/<desc>, top-left 'States of matter' heading and 13 visible explanatory labels were found."
+            },
+            "has_animation": {
+              "passed": true,
+              "detail": "At least one SMIL/CSS animation is attached to visible elements and uses only safe properties."
+            },
+            "scientific_terms": {
+              "passed": true,
+              "detail": "Matched 5/5 required terms; 4 needed. Found: solid, liquid, gas, particles, vibrate."
+            },
+            "concept_structure": {
+              "passed": true,
+              "detail": "States of matter verified: 3 regions, Solid (ordered lattice, spacing 40.0px), Liquid (close particles 41.3px with mobile arrangement), Gas (widely separated 109.6px = 2.7x solid).",
+              "metrics": {
+                "mean_solid_spacing": 40.0,
+                "mean_liquid_spacing": 41.3,
+                "mean_gas_spacing": 109.6,
+                "solid_lattice_order": 0.0
+              }
+            }
+          },
+          "passed": true,
+          "visual_quality": {
+            "passed": true,
+            "checks": {
+              "text_margins": {
+                "passed": true,
+                "detail": "All 14 text labels sit safely within conservative 24.0px canvas margins.",
+                "metrics": {
+                  "label_count": 14,
+                  "margin_px": 24.0
+                }
+              },
+              "no_overlapping_labels": {
+                "passed": true,
+                "detail": "Zero overlapping labels detected across 14 text elements.",
+                "metrics": {
+                  "overlap_count": 0,
+                  "labels_checked": 14
+                }
+              },
+              "leader_line_accuracy": {
+                "passed": true,
+                "detail": "Direct label proximity layout used; no disconnected leader lines found.",
+                "metrics": {
+                  "leader_line_count": 0
+                }
+              },
+              "label_geometry_clearance": {
+                "passed": true,
+                "detail": "Key geometric focal points have clear breathing room without obscuring text.",
+                "metrics": {
+                  "focal_points_checked": 0
+                }
+              },
+              "animation_dynamics": {
+                "passed": true,
+                "detail": "Animation is visibly active, bound to visible elements, with meaningful dynamic changes.",
+                "metrics": {
+                  "smil_animated_count": 34,
+                  "has_css_keyframes": false
+                }
+              },
+              "canvas_balance": {
+                "passed": true,
+                "detail": "Diagram geometry is well-balanced (860.0x280.0px, centroid at (480.0, 280.0)).",
+                "metrics": {
+                  "span_width": 860.0,
+                  "span_height": 280.0,
+                  "centroid_x": 480.0,
+                  "centroid_y": 280.0
+                }
+              }
+            },
+            "review_requirements": [
+              "Confirm leader lines terminate on the exact intended physical boundary.",
+              "Verify visual hierarchy, font legibility and aesthetic balance.",
+              "Check animation pacing and clarity in both Daylight and Night themes.",
+              "Confirm no visual clipping occurs in small viewports."
+            ]
+          }
+        }
+      ],
+      "prompt_version": "science-svg-editorial-v2"
+    }
+  ]
+}

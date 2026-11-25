@@ -1,0 +1,36 @@
+# Secrets and Credentials
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Build, Test & QA Artifacts
+.coverage
+htmlcov/
+dist/
+build/
+reports/
+node_modules/
+*.log
+
+# Internal Guides, Prompts & Local Test Plans
+ANTIGRAVITY_PHASED_BUILD_GUIDE.md
+CODE_WALKTHROUGH.md
+PROMPTS/
+QA_STATUS.md
+QA_TEST_PLAN.md
+render.yaml

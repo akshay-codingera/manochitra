@@ -1,0 +1,42 @@
+name: Manochitra CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  backend-tests:
+    name: Backend tests and Python compile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+      - name: Install backend and test dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Compile Python modules
+        run: python -m compileall -q backend scripts
+      - name: Run backend tests
+        run: pytest -q backend/tests
+
+  frontend-tests:
+    name: Frontend tests and syntax
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run frontend export tests
+        run: npm --prefix frontend test
+      - name: Check frontend JavaScript syntax
+        run: npm --prefix frontend run check

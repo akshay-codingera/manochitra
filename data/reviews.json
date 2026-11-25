@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-11-25T14:29:07.306152+00:00",
+  "reviews": {
+    "pythagoras": {
+      "concept_id": "pythagoras",
+      "decision": "pending",
+      "note": "Regenerated from v1 feedback: Make hypotenuse pulse prominent",
+      "version": 20,
+      "updated_at": "2026-11-25T14:29:07.166783+00:00"
+    },
+    "circle": {
+      "concept_id": "circle",
+      "decision": "approved",
+      "note": "Approved by reviewer.",
+      "version": 1,
+      "updated_at": "2026-11-25T14:29:07.235162+00:00"
+    },
+    "series-circuit": {
+      "concept_id": "series-circuit",
+      "decision": "approved",
+      "note": "Verified continuous loop",
+      "version": 1,
+      "updated_at": "2026-11-25T14:29:07.306133+00:00"
+    },
+    "photosynthesis": {
+      "concept_id": "photosynthesis",
+      "decision": "pending",
+      "note": "",
+      "version": 2,
+      "updated_at": "2026-11-25T12:39:56.655422+00:00"
+    }
+  }
+}
