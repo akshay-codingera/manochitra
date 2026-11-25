@@ -1,8 +1,16 @@
 import json
+from pathlib import Path
 
 import pytest
 
 from app.persistence.results_repository import ModelRunsRepository, ResultsRepository
+
+
+@pytest.fixture(autouse=True)
+def ensure_tmp_path_ready(tmp_path: Path) -> Path:
+    """Ensure the isolated temporary directory and its parents exist on all platforms."""
+    tmp_path.mkdir(parents=True, exist_ok=True)
+    return tmp_path
 
 
 def test_repository_initialises_empty_results_file(tmp_path):

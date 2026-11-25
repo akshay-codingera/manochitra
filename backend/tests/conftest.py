@@ -1,8 +1,42 @@
 from __future__ import annotations
 
+import os
+import sys
+from pathlib import Path
 import pytest
 
 from app.core.concepts import CONCEPT_BY_ID
+
+# On Windows / Python 3.14+, directory junctions/symlinks cannot be deleted with Path.unlink().
+# Catch PermissionError / OSError and remove directory junctions safely.
+try:
+    import _pytest.pathlib
+
+    def _safe_cleanup_dead_symlinks(root: Path) -> None:
+        try:
+            for left_dir in root.iterdir():
+                if left_dir.is_symlink():
+                    if not left_dir.resolve().exists():
+                        try:
+                            left_dir.unlink()
+                        except (PermissionError, OSError):
+                            try:
+                                os.rmdir(left_dir)
+                            except OSError:
+                                pass
+        except OSError:
+            pass
+
+    _pytest.pathlib.cleanup_dead_symlinks = _safe_cleanup_dead_symlinks
+except (ImportError, AttributeError):
+    pass
+
+
+def pytest_configure(config: pytest.Config) -> None:
+    """Ensure custom basetemp directory and its parent exist if specified."""
+    basetemp = config.getoption("basetemp", None)
+    if basetemp:
+        Path(basetemp).mkdir(parents=True, exist_ok=True)
 
 
 @pytest.fixture
