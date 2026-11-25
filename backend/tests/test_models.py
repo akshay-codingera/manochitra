@@ -242,7 +242,8 @@ def test_diagnostics_without_secrets():
     assert "gemini-3.5-flash-lite" in diag["supported_models"]
     assert "gemini-3.8-flash" in diag["supported_models"]
     assert "api_key" not in str(diag).lower() or diag.get("api_key_configured") is not None
-    assert config.GEMINI_API_KEY not in str(diag)
+    if config.GEMINI_API_KEY:
+        assert config.GEMINI_API_KEY not in str(diag)
 
 
 # API POST generate validation tests
