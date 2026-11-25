@@ -31,7 +31,7 @@ globalThis.localStorage = {
   setItem(key, value) { this.data[key] = value; },
 };
 
-const { calculateTelemetry } = await import('../js/dashboard.js');
+const { calculateTelemetry, formatStandardCost, formatTokensText } = await import('../js/dashboard.js');
 
 const concepts = [
   { id: 'pythagoras', name: "Pythagoras' theorem" },
@@ -122,4 +122,38 @@ test('retries and repairs are counted across genuine attempts without requiring 
 
   // Latency includes all genuine attempts
   assert.equal(t.averageLatency, '833 ms');
+});
+
+test('formatStandardCost uses paid_equivalent_cost_usd when available', () => {
+  const result = {
+    status: 'PASS',
+    usage: { input_tokens: 1803, output_tokens: 3669, metadata_available: true },
+    cost: { paid_equivalent_cost_usd: 0.00971, estimated_cost_usd: 0.0 },
+  };
+  assert.equal(formatStandardCost(result), '$0.00971');
+});
+
+test('formatStandardCost returns N/A when metadata is unavailable instead of a false zero', () => {
+  assert.equal(formatStandardCost(null), 'N/A');
+  assert.equal(formatStandardCost({ status: 'NOT_GENERATED' }), 'N/A');
+  assert.equal(formatStandardCost({ status: 'PASS', usage: { metadata_available: false } }), 'N/A');
+});
+
+test('formatTokensText formats tokens properly or returns N/A', () => {
+  const result = {
+    status: 'PASS',
+    usage: { input_tokens: 4037, output_tokens: 1976, metadata_available: true },
+  };
+  assert.equal(formatTokensText(result), '4,037 in · 1,976 out');
+
+  assert.equal(formatTokensText({ status: 'NOT_GENERATED' }), 'Tokens: N/A');
+  assert.equal(formatTokensText({ status: 'PASS', usage: { metadata_available: false } }), 'Tokens: N/A');
+});
+
+test('telemetry includes accepted, rejected, and pending review counts', () => {
+  const t = calculateTelemetry(concepts, []);
+  assert.equal(typeof t.acceptedCount, 'number');
+  assert.equal(typeof t.rejectedCount, 'number');
+  assert.equal(typeof t.pendingCount, 'number');
+  assert.equal(t.acceptedCount + t.rejectedCount + t.pendingCount, 5);
 });

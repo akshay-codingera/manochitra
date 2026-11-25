@@ -63,19 +63,46 @@ The application also records the generation details so that the result can be in
 
 The current application is built around the following workflow:
 
-1. The user selects a science concept.
-2. The backend loads the concept description and builds a diagram-specific prompt.
-3. The Gemini API generates an SVG illustration.
-4. The backend extracts the SVG from the model response.
-5. The SVG validator runs the required checks.
-6. When a validation failure occurs, the pipeline can send one corrective request containing the failure details.
-7. The final result, validation status and available usage information are recorded.
-8. The frontend displays the diagram and its generation information.
-9. The user can inspect the diagram and request regeneration when an improved result is needed.
-
-The application also contains a preview interface for inspecting the SVG and its animation.
-
-The five initial results are stored in `data/results.json`. They are loaded by the backend when the application starts, so opening the dashboard does not require a new Gemini request.
+1. **Structured Review Dashboard**: The user is presented with a 6-column review table covering the five GCSE science concepts:
+   - `#`: Concept index (`01` to `05`).
+   - `Concept & Subject`: Subject badge (`MATHS`, `PHYSICS`, `BIOLOGY`, `CHEMISTRY`), full concept name, and curriculum description.
+   - `Animated Diagram`: Aspect-ratio-preserved animated SVG preview with playback controls, inspector modal, and SVG/PNG export.
+   - `Code Checks`: All six deterministic quality gates with individual PASS / FAIL indicators and details.
+   - `Cost & Retries`: Prominent standard-pricing estimated API cost, free-tier charge note, input/output tokens, and separate retry/repair counts.
+   - `Reviewer Decision & Notes`: Interactive Approve and Reject actions, review status badge, reviewer notes textarea, and regeneration action.
+2. **Compact Live Metrics**: Six live metrics derived directly from application and review state:
+   - Total diagrams (`05`)
+   - Validated diagrams (e.g. `5 / 5`)
+   - Passed code checks (e.g. `30 / 30`)
+   - Accepted diagrams (live count of accepted reviews)
+   - Rejected diagrams (live count of rejected reviews)
+   - Pending reviews (live count of unreviewed concepts)
+3. **Reviewer Workflow & Sign-Off**:
+   - Reviewers can mark any diagram version as **Approve** (`accepted`) or **Reject** (`rejected`).
+   - Reviewer notes can be entered and are debounced and saved automatically.
+   - Decisions update the status badge immediately and highlight the selected action.
+   - Decisions can be changed at any time.
+4. **LocalStorage Persistence**:
+   - Review decisions and notes are stored by concept ID and diagram version in browser LocalStorage (`manochitra_reviews_v1`).
+   - All decisions and notes survive browser refreshes and theme toggling.
+   - Different concepts remain strictly independent.
+   - Malformed or restricted storage is handled safely without crashing.
+5. **IndexedDB Local Diagram Archive**:
+   - Every time a diagram is approved or rejected, its exact SVG markup (with animated SMIL/CSS intact), concept metadata, version number, reviewer notes, and timestamp are preserved in browser **IndexedDB** (`manochitra_archive_db`).
+   - The interactive archive section allows filtering by `ALL`, `APPROVED`, and `REJECTED`.
+   - Archived SVGs can be previewed or downloaded directly with animations fully functional.
+6. **Version-Specific Review Lifecycle**:
+   - An approval or rejection strictly applies to that specific diagram version (e.g. Pythagoras v1 accepted).
+   - If a diagram is regenerated, the new version begins as **Pending Review**.
+   - Older versions and their review history remain preserved in IndexedDB and version history.
+7. **Measured Generation & Corrective Repairs**:
+   - When regeneration is requested, the reviewer's feedback note is passed as a prompt input to Gemini.
+   - The SVG validator checks the output against all six gates, executing at most one corrective repair if checks fail.
+8. **Cost & Token Transparency**:
+   - Prominently displays **Estimated API Cost (Standard Pricing)** using actual model-specific rates.
+   - Explicitly notes **Estimated free-tier charge: $0.00** so standard pricing is never confused with an actual payment.
+   - Distinguishes API retries (transient 429/503 network backoff) from validation repairs (corrective re-generation).
+   - Shows `N/A` when metadata is unavailable, never fabricating a false zero.
 
 ## 3. Technology stack
 
@@ -545,7 +572,35 @@ This is useful when a diagram is regenerated because the application can retain 
 
 Stores review-related data used by the backend review workflow.
 
-The exact review interaction shown in the browser depends on the enabled frontend workflow.
+### Client-Side Persistence: LocalStorage & IndexedDB
+
+In addition to backend files, MANOCHITRA implements persistent client-side storage:
+
+#### 1. LocalStorage (`manochitra_reviews_v1`)
+Reviewer decisions and notes are stored per concept ID and diagram version:
+```json
+{
+  "pythagoras": {
+    "1": {
+      "decision": "accepted",
+      "reviewer_note": "Correct geometry and readable labels.",
+      "updated_at": "2026-11-25T14:30:00.000Z"
+    }
+  }
+}
+```
+- **Approve**: Marks version as `accepted`, updates the note, and highlights the selection.
+- **Reject**: Marks version as `rejected`, updates the note, and highlights the selection.
+- **Version Isolation**: When a diagram is regenerated, version 2 begins with `Pending Review`, preserving version 1's decision in history.
+- **Resilience**: Safely handles corrupt JSON or disabled storage environments without crashing.
+
+#### 2. Browser IndexedDB Diagram Archive (`manochitra_archive_db`)
+Because generated SVGs can exceed LocalStorage string limits, the actual animated SVG vector documents are preserved in browser **IndexedDB**:
+- **Preserved Content**: Exact original SVG markup (with SMIL and CSS animations intact), concept name, version number, review decision, reviewer notes, and timestamp.
+- **Logical Organization**: Indexed by concept ID and version, with separate queryable indexes for Approved and Rejected diagrams.
+- **Local Archive View**: Dedicated archive gallery allows filtering by `ALL`, `APPROVED`, and `REJECTED` diagrams.
+- **Animation Integrity**: Archived diagrams can be inspected in the full modal or downloaded directly as `.svg` files with their animations functioning standalone.
+- **Local Privacy**: IndexedDB data resides strictly within the local browser profile; no diagram files or notes are uploaded to external third-party services.
 
 ### Why JSON was used
 
@@ -589,14 +644,22 @@ The token counts should come from the model's usage metadata. The application sh
 
 Cost is an estimate based on the configured model pricing and billing tier. It is not a billing invoice.
 
-A useful distinction is maintained between:
+### Standard Pricing vs. Free-Tier Charge Distinction
 
-- **API retries:** additional requests caused by temporary HTTP failures.
-- **Validation repairs:** a corrective generation caused by an invalid SVG.
+A common confusion in generative AI dashboards is displaying a prominent `$0.00` cost when calling an API under a promotional or developer tier, which conceals the actual operational cost of generation.
 
-These are counted separately because they represent different stages of the application.
-
-If the API does not provide the necessary token metadata, the cost should be reported as unavailable rather than as a fabricated zero.
+MANOCHITRA resolves this with complete transparency:
+- **Estimated API Cost (Standard Pricing)**: Prominently displayed using the official reference rate for the selected model. For example, for Gemini 3.5 Flash-Lite ($0.30/1M input, $2.50/1M output), a generation with 4,037 input and 1,976 output tokens displays:
+  ```text
+  Estimated API Cost (Standard Pricing)
+  $0.00615
+  ```
+- **Estimated Free-Tier Charge: $0.00**: Below the standard estimate, the UI explicitly notes that under the Google AI Studio free-of-charge tier, the actual current billing charge is `$0.00`.
+- **Token Transparency**: Exact counts (`4,037 in · 1,976 out`) are shown. If token usage metadata is unavailable, the UI displays `Tokens: N/A` and `Cost: N/A` rather than fabricating a false zero.
+- **Separate Retry and Repair Accounting**:
+  - **API Retries**: Network-level retries caused by transient HTTP 429 rate limits or 503 service unavailability.
+  - **Validation Repairs**: Application-level corrective prompt repairs executed when the generated SVG fails one of the six automated quality gates.
+- **Layout Precision**: The cost amount and version badge are laid out using flex containers with explicit column widths, ensuring they never overlap across screen resolutions.
 
 The trace ID and stage timings help identify which part of the pipeline took the most time when investigating a generation request.
 
@@ -891,9 +954,9 @@ There are a few limitations in the current implementation.
 
 **Model availability:** Gemini may experience rate limits, high demand or temporary failures. The retry handler limits repeated requests, but it cannot guarantee model availability.
 
-**Persistence:** JSON files are convenient during development but are not a replacement for a shared database in a serverless production environment.
+**Persistence & Browser Boundaries:** Review decisions and notes are stored in `LocalStorage`, and full animated vector SVGs are archived in `IndexedDB`. These belong to the local browser profile on that specific device. They are not synchronized across multiple machines, users, or incognito sessions without an external multi-tenant database. Similarly, JSON runtime files are suitable for local development and packaging initial snapshots, but serverless environments like Vercel Functions provide ephemeral local storage.
 
-**Usage and cost:** Token and cost information depends on the metadata returned by Gemini and the configured pricing schedule. An estimate should not be treated as an exact invoice.
+**Usage and cost:** Token and cost information depends on the metadata returned by Gemini and the configured pricing schedule. An estimate reflects standard reference pricing and should not be treated as an exact invoice.
 
 These limitations are documented because a validator should not claim more than it can actually prove.
 

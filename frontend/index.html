@@ -40,18 +40,20 @@
       <section class="hero-grid" aria-labelledby="hero-title">
         <div class="hero-copy">
           <div class="eyebrow"><span class="eyebrow-line"></span> GENERATIVE ART, WITH GUARDRAILS</div>
-          <h1 id="hero-title">Make science<br /><em>visible.</em></h1>
+          <h1 id="hero-title">UK GCSE Science Concepts — 5 Diagrams</h1>
           <p class="hero-description">
-            Five GCSE concepts enter a measured generation pipeline. Every SVG is checked in code,
-            repaired once when needed, then placed in front of a human reviewer.
+            Five curriculum science concepts generated with Gemini AI, checked against six automated quality gates,
+            and verified through human review. Reviewer decisions are saved in LocalStorage and diagrams are preserved in IndexedDB.
           </p>
           <div class="hero-meta">
             <span class="meta-pip"></span>
-            <span>One concept at a time</span>
+            <span>Five core concepts</span>
             <span class="meta-divider">/</span>
             <span>Six automated checks</span>
             <span class="meta-divider">/</span>
             <span>Human sign-off</span>
+            <span class="meta-divider">/</span>
+            <span class="storage-meta-tag"><span class="tag-dot"></span> LocalStorage &amp; IndexedDB active</span>
           </div>
         </div>
 
@@ -199,34 +201,61 @@
 
         <!-- Standard Review View Container -->
         <div id="standard-review-view">
-          <section class="metrics-grid" aria-label="Live pipeline metrics">
-            <article class="metric-card"><span>DIAGRAMS PASSED</span><strong id="metric-pass">0 / 5</strong><small id="metric-pass-sub">Only generated results are counted</small></article>
-            <article class="metric-card"><span>CHECKS PASSED</span><strong id="metric-checks">0 / 0</strong><small id="metric-checks-sub">Six quality gates per generated result</small></article>
-            <article class="metric-card"><span>VALIDATION REPAIRS</span><strong id="metric-repairs">0</strong><small id="metric-repairs-sub">Corrective generation repairs</small></article>
-            <article class="metric-card"><span>API RETRIES</span><strong id="metric-retries">0</strong><small id="metric-retries-sub">Transient 429 / 503 backoff retries</small></article>
-            <article class="metric-card"><span>AVG. PIPELINE TIME</span><strong id="metric-latency">—</strong><small id="metric-latency-sub">Measured backend generation duration</small></article>
+          <section class="metrics-grid" aria-label="Live pipeline and review metrics">
+            <article class="metric-card"><span>TOTAL DIAGRAMS</span><strong id="metric-total">05</strong><small id="metric-total-sub">Curriculum concepts</small></article>
+            <article class="metric-card"><span>VALIDATED DIAGRAMS</span><strong id="metric-pass">0 / 5</strong><small id="metric-pass-sub">Valid SVG &amp; PASS status</small></article>
+            <article class="metric-card"><span>PASSED CODE CHECKS</span><strong id="metric-checks">0 / 0</strong><small id="metric-checks-sub">Six gates per concept</small></article>
+            <article class="metric-card"><span>ACCEPTED DIAGRAMS</span><strong id="metric-accepted">0</strong><small id="metric-accepted-sub">Approved by reviewer</small></article>
+            <article class="metric-card"><span>REJECTED DIAGRAMS</span><strong id="metric-rejected">0</strong><small id="metric-rejected-sub">Revision requested</small></article>
+            <article class="metric-card"><span>PENDING REVIEWS</span><strong id="metric-pending">5</strong><small id="metric-pending-sub">Awaiting sign-off</small></article>
           </section>
 
           <div class="table-shell">
             <table class="diagram-table">
               <thead>
                 <tr>
-                  <th class="col-concept">CONCEPT / SUBJECT</th>
-                  <th class="col-illustration">GENERATED ILLUSTRATION</th>
-                  <th class="col-checks">AUTOMATED CHECKS</th>
-                  <th class="col-usage">USAGE</th>
-                  <th class="col-review">REGENERATE DIAGRAM</th>
+                  <th class="col-number">#</th>
+                  <th class="col-concept">CONCEPT &amp; SUBJECT</th>
+                  <th class="col-illustration">ANIMATED DIAGRAM</th>
+                  <th class="col-checks">CODE CHECKS</th>
+                  <th class="col-usage">COST &amp; RETRIES</th>
+                  <th class="col-review">REVIEWER DECISION &amp; NOTES</th>
                 </tr>
               </thead>
               <tbody id="results-body">
-                <tr><td colspan="5" class="loading-row">Loading the saved result snapshot…</td></tr>
+                <tr><td colspan="6" class="loading-row">Loading the saved result snapshot…</td></tr>
               </tbody>
             </table>
           </div>
           <div class="table-footnote">
             <span>01 — 05 / ASSIGNMENT CONCEPTS</span>
-            <span>Interactive animated vector illustrations generated with Gemini 3.5 Flash-Lite.</span>
+            <span>Interactive animated vector illustrations generated with Gemini 3.5 Flash-Lite · Decisions saved to LocalStorage</span>
           </div>
+
+          <!-- Local Diagram Archive Section (IndexedDB) -->
+          <section class="archive-section" id="archive-section" aria-labelledby="archive-heading">
+            <div class="archive-header-row">
+              <div class="archive-title-group">
+                <span class="section-overline">BROWSER INDEXEDDB ARCHIVE</span>
+                <h3 id="archive-heading">Local Diagram Archive</h3>
+                <p class="archive-description">
+                  Preserved records of approved and rejected diagrams stored in your browser's IndexedDB.
+                  Diagrams retain full SVG vector markup and animation.
+                </p>
+              </div>
+              <div class="archive-filter-bar" role="group" aria-label="Filter archived diagrams">
+                <button type="button" class="archive-filter-btn active" data-filter="all">ALL (<span id="archive-count-all">0</span>)</button>
+                <button type="button" class="archive-filter-btn" data-filter="accepted">APPROVED (<span id="archive-count-accepted">0</span>)</button>
+                <button type="button" class="archive-filter-btn" data-filter="rejected">REJECTED (<span id="archive-count-rejected">0</span>)</button>
+              </div>
+            </div>
+            <div class="archive-grid" id="archive-grid">
+              <div class="archive-empty-state">
+                <strong>No diagrams archived yet.</strong>
+                <p>Approve or reject diagrams in the review table above to preserve them in the local IndexedDB archive.</p>
+              </div>
+            </div>
+          </section>
         </div>
       </section>
     </main>

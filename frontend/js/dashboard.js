@@ -1,8 +1,9 @@
-import { getReview, saveDecision, saveNote } from './reviews.js';
+import { getReview, saveDecision, saveNote, getReviewCounts } from './reviews.js';
 import { downloadPng, downloadSvg } from './exports.js';
-import { regenerateWithFeedback, saveReviewToServer, approveVersion } from './api.js';
+import { regenerateWithFeedback, saveReviewToServer } from './api.js';
+import { archiveDiagram, getAllArchivedDiagrams, getArchiveCounts } from './archive.js';
 
-const CHECKS = [
+export const CHECKS = [
   ['valid_svg', 'Valid SVG', 'Mandatory'],
   ['within_viewbox', 'Inside viewBox', 'Mandatory'],
   ['title_and_labels', 'Title + labels', 'Mandatory'],
@@ -13,29 +14,70 @@ const CHECKS = [
 
 let currentConcepts = [];
 let currentResults = [];
+let currentArchiveFilter = 'all';
 
 function element(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
-  if (text !== undefined) node.textContent = text;
+  if (text !== undefined && text !== null) node.textContent = text;
   return node;
 }
 
+export function formatStandardCost(result) {
+  if (!result || result.status === 'NOT_GENERATED') return 'N/A';
+  if (result.usage?.metadata_available === false) return 'N/A';
+
+  const paidEq = result?.cost?.paid_equivalent_cost_usd;
+  if (typeof paidEq === 'number' && paidEq > 0) {
+    return `$${paidEq.toFixed(5)}`;
+  }
+
+  // Calculate from tokens if standard rate exists
+  const input = result?.usage?.input_tokens;
+  const output = result?.usage?.output_tokens;
+  if (typeof input === 'number' && typeof output === 'number' && result?.usage?.metadata_available) {
+    const inputRate = result?.cost?.input_rate_per_million ?? 0.3;
+    const outputRate = result?.cost?.output_rate_per_million ?? 2.5;
+    const calc = (input * inputRate + output * outputRate) / 1_000_000;
+    return `$${calc.toFixed(5)}`;
+  }
+
+  return 'N/A';
+}
+
+export function formatTokensText(result) {
+  if (!result || result.status === 'NOT_GENERATED') return 'Tokens: N/A';
+  if (result.usage?.metadata_available === false) return 'Tokens: N/A';
+  const input = result?.usage?.input_tokens;
+  const output = result?.usage?.output_tokens;
+  if (typeof input === 'number' && typeof output === 'number') {
+    return `${input.toLocaleString()} in · ${output.toLocaleString()} out`;
+  }
+  return 'Tokens: N/A';
+}
+
 function formatCost(result) {
-  const cost = result?.cost?.estimated_cost_usd;
-  if (typeof cost !== 'number') return '—';
-  return `$${cost.toFixed(5)}`;
+  return formatStandardCost(result);
 }
 
 function getCheck(result, key) {
   return result?.checks?.[key] || { passed: false, detail: 'Not generated yet.' };
 }
 
+function createNumberCell(concept) {
+  const cell = element('td', 'number-cell');
+  cell.append(element('span', 'col-number', `0${concept.number}`));
+  return cell;
+}
+
 function createConceptCell(concept) {
   const cell = element('td', 'concept-cell');
-  cell.append(element('span', 'concept-number', `0${concept.number} / 05`));
+  cell.append(element('span', 'subject-tag', (concept.subject || 'SCIENCE').toUpperCase()));
   cell.append(element('strong', 'concept-name', concept.name));
-  cell.append(element('span', 'subject-tag', concept.subject.toUpperCase()));
+  const desc = concept.source_text || concept.description || '';
+  if (desc) {
+    cell.append(element('p', 'concept-description', desc));
+  }
   return cell;
 }
 
@@ -316,6 +358,7 @@ function createIllustrationCell(concept, result) {
   const cell = element('td', 'illustration-cell');
   const frame = element('div', 'diagram-frame');
   const validSvg = Boolean(result?.svg && getCheck(result, 'valid_svg').passed);
+  const versionNum = result?.version || 1;
 
   if (validSvg) {
     frame.setAttribute('tabindex', '0');
@@ -347,12 +390,17 @@ function createIllustrationCell(concept, result) {
   const footer = element('div', 'preview-footer');
   const status = result?.status || 'NOT_GENERATED';
   const modelId = result?.model;
+
+  const metaGroup = element('div', 'preview-meta-group');
   if (modelId) {
     const isFlash = modelId.includes('3.8');
-    footer.append(element('span', `model-badge ${isFlash ? 'flash' : 'lite'}`, modelId));
+    metaGroup.append(element('span', `model-badge ${isFlash ? 'flash' : 'lite'}`, modelId));
   } else {
-    footer.append(element('span', '', 'Gemini · pending'));
+    metaGroup.append(element('span', 'model-badge lite', 'gemini-3.5-flash-lite'));
   }
+  metaGroup.append(element('span', 'version-tag', `v${versionNum}`));
+  footer.append(metaGroup);
+
   if (validSvg) {
     const actions = element('div', 'image-downloads');
     const inspectButton = element('button', 'preview-link', 'INSPECT ⛶');
@@ -389,7 +437,7 @@ function createIllustrationCell(concept, result) {
     actions.append(inspectButton, svgButton, pngButton);
     footer.append(actions);
   } else {
-    footer.append(element('span', '', status.replaceAll('_', ' ')));
+    footer.append(element('span', 'row-status wait', status.replaceAll('_', ' ')));
   }
   cell.append(footer);
   return cell;
@@ -398,127 +446,227 @@ function createIllustrationCell(concept, result) {
 function createChecksCell(result) {
   const cell = element('td', 'checks-cell');
   const list = element('div', 'check-list');
-  for (const [key, label, group] of CHECKS) {
+
+  CHECKS.forEach(([key, label, group], idx) => {
     const check = getCheck(result, key);
     const state = !result ? 'wait' : check.passed ? 'pass' : result.status === 'NOT_GENERATED' ? 'wait' : 'fail';
     const row = element('div', `check-item ${state}`);
-    row.append(element('span', 'check-mark', state === 'pass' ? '✓' : state === 'fail' ? '×' : '·'));
-    const text = element('span', 'check-copy');
+
+    // Check mark with clear text
+    const markWrap = element('span', `check-mark ${state}`, state === 'pass' ? '✓' : state === 'fail' ? '×' : '·');
+    row.append(markWrap);
+
+    const text = element('div', 'check-copy');
     const header = element('div', 'check-header');
+    header.append(element('span', 'check-num', `0${idx + 1}.`));
     header.append(element('span', 'check-name', label));
-    if (group) {
-      header.append(element('span', `check-badge ${group.toLowerCase()}`, group));
-    }
+
+    const statusPill = element('span', `check-status-pill ${state}`, state === 'pass' ? 'PASS' : state === 'fail' ? 'FAIL' : 'WAIT');
+    header.append(statusPill);
+
     text.append(header);
     text.append(element('small', 'check-detail', check.detail || (state === 'wait' ? 'Awaiting result' : 'Check failed')));
     row.append(text);
     list.append(row);
-  }
+  });
+
   cell.append(list);
+
   const status = result?.status || 'WAITING';
   const statusClass = status === 'PASS' ? 'pass' : status === 'FAIL' || status === 'ERROR' ? 'fail' : 'wait';
-  cell.append(element('span', `row-status ${statusClass}`, status));
-  if (result?.attempt_history?.length) {
-    const details = element('details', 'attempt-details');
-    details.append(element('summary', '', `${result.attempt_history.length} generation attempt(s)`));
-    for (const attempt of result.attempt_history) {
-      const attemptLine = element('div', 'attempt-line');
-      const failed = Object.entries(attempt.checks || {}).filter(([, check]) => !check.passed);
-      attemptLine.append(element('strong', '', `Attempt ${attempt.attempt}: ${attempt.passed ? 'PASS' : 'FAIL'}`));
-      if (failed.length) {
-        attemptLine.append(element('small', '', failed.map(([key]) => key.replaceAll('_', ' ')).join(' · ')));
-      } else {
-        attemptLine.append(element('small', '', 'All six checks passed.'));
-      }
-      details.append(attemptLine);
-    }
-    cell.append(details);
-  }
+  const statusFooter = element('div', 'checks-footer');
+  statusFooter.append(element('span', `row-status ${statusClass}`, `${status} (${result?.attempt_history?.length || 1} ATTEMPT)`));
+  cell.append(statusFooter);
+
   return cell;
 }
 
 function createUsageCell(result) {
   const cell = element('td', 'usage-cell');
-  const versionNum = result?.version || 1;
-  const isPass = result?.status === 'PASS';
 
-  // Cost and Version Badge row: flex layout so version appears beside cost without overlap
-  const costRow = element('div', 'cost-badge-row');
-  costRow.append(element('strong', 'usage-cost', formatCost(result)));
-  const verBadge = element('span', 'version-tag', `v${versionNum}`);
-  verBadge.classList.add(isPass ? 'approved' : 'pending');
-  costRow.append(verBadge);
-  cell.append(costRow);
+  // Prominent Standard Pricing Estimated Cost
+  const costBlock = element('div', 'cost-card-block');
+  costBlock.append(element('span', 'cost-eyebrow', 'Estimated API Cost (Standard Pricing)'));
 
-  const input = result?.usage?.input_tokens;
-  const output = result?.usage?.output_tokens;
-  const usage = input === undefined ? 'Tokens pending' : `${input} in · ${output} out`;
-  cell.append(element('span', 'usage-label', usage));
-  const retries = result?.retries?.total_retries;
-  cell.append(element('span', 'retry-badge', `RETRIES  ${retries ?? '—'}`));
-  if (result?.retries) {
-    cell.append(element('span', 'usage-label', `API ${result.retries.api_retries} · repair ${result.retries.validation_retries}`));
-  }
-  if (result?.cost?.billing_tier === 'free') {
-    cell.append(element('span', 'usage-label', `Paid eq. ${formatPaidEquivalent(result)}`));
-  }
+  const costVal = formatStandardCost(result);
+  const costRow = element('div', 'cost-amount-row');
+  costRow.append(element('strong', 'usage-cost', costVal));
+  costBlock.append(costRow);
+
+  // Free-tier charge explicitly noted
+  costBlock.append(element('span', 'usage-free-tier', 'Estimated free-tier charge: $0.00'));
+  cell.append(costBlock);
+
+  // Compact Tokens & Retries metrics
+  const metaGrid = element('div', 'usage-meta-list');
+  metaGrid.append(element('div', 'usage-meta-line tokens', formatTokensText(result)));
+
+  const apiRetries = result?.retries?.api_retries ?? 0;
+  const valRepairs = result?.retries?.validation_retries ?? 0;
+
+  const retryRow = element('div', 'usage-retries-row');
+  retryRow.append(element('span', 'meta-pill', `API RETRIES  ${apiRetries}`));
+  retryRow.append(element('span', 'meta-pill', `REPAIRS  ${valRepairs}`));
+  metaGrid.append(retryRow);
+
   if (typeof result?.latency_ms === 'number') {
-    cell.append(element('span', 'usage-label', `Total ${Math.round(result.latency_ms)} ms`));
+    metaGrid.append(element('div', 'usage-meta-line latency', `Latency: ${Math.round(result.latency_ms)} ms`));
   }
-  if (result?.timings_ms) {
-    const requestMs = Math.round(result.timings_ms.model_request_with_retries_ms || 0);
-    const svgMs = Math.round(result.timings_ms.svg_validation_ms || 0);
-    const csMs = Math.round(result.timings_ms.concept_structure_ms || 0);
-    const checksMs = Math.round(result.timings_ms.validation_ms || (svgMs + csMs));
-    cell.append(element('span', 'usage-label', `Model + backoff ${requestMs} ms`));
-    if (svgMs || csMs) {
-      cell.append(element('span', 'usage-label', `SVG ${svgMs} ms · Structure ${csMs} ms`));
-    } else {
-      cell.append(element('span', 'usage-label', `Validation ${checksMs} ms`));
-    }
-  }
-  if (result?.trace_id) {
-    cell.append(element('span', 'usage-label', `TRACE ${result.trace_id.slice(0, 8)}`));
-  }
-  return cell;
-}
 
-function formatPaidEquivalent(result) {
-  const amount = result?.cost?.paid_equivalent_cost_usd;
-  return typeof amount === 'number' ? `$${amount.toFixed(5)}` : '—';
+  cell.append(metaGrid);
+  return cell;
 }
 
 function createReviewCell(concept, result) {
   const cell = element('td', 'review-cell');
   const versionNum = result?.version || 1;
-  const versionsCount = result?.versions_count || (result?.versions?.length || 1);
+  const review = getReview(concept.id, versionNum);
   const isPass = result?.status === 'PASS';
 
-  if (versionsCount > 1) {
-    const verHead = element('div', 'review-version-bar');
-    const verCountLabel = element('span', 'version-selector-label', `${versionsCount} versions recorded`);
-    verHead.append(verCountLabel);
-    cell.append(verHead);
-  }
+  // 1. Header with Version Tag & Current Decision Status
+  const headerBar = element('div', 'review-header-bar');
+  const verBadge = element('span', 'version-tag', `v${versionNum}`);
+  headerBar.append(verBadge);
 
-  // Single Primary Action: REGENERATE DIAGRAM
+  const statusBadge = element('span', `review-decision-badge ${review.decision}`);
+  if (review.decision === 'accepted') {
+    statusBadge.textContent = '✓ ACCEPTED';
+  } else if (review.decision === 'rejected') {
+    statusBadge.textContent = '✕ REJECTED';
+  } else {
+    statusBadge.textContent = '◌ PENDING REVIEW';
+  }
+  headerBar.append(statusBadge);
+  cell.append(headerBar);
+
+  // 2. Review Action Buttons (Approve & Reject)
+  const actionsRow = element('div', 'review-actions-row');
+
+  const approveBtn = element('button', `review-btn approve ${review.decision === 'accepted' ? 'selected' : ''}`, '✓ APPROVE');
+  approveBtn.type = 'button';
+  approveBtn.setAttribute('aria-label', `Approve ${concept.name} version ${versionNum}`);
+
+  const rejectBtn = element('button', `review-btn reject ${review.decision === 'rejected' ? 'selected' : ''}`, '✕ REJECT');
+  rejectBtn.type = 'button';
+  rejectBtn.setAttribute('aria-label', `Reject ${concept.name} version ${versionNum}`);
+
+  actionsRow.append(approveBtn, rejectBtn);
+  cell.append(actionsRow);
+
+  // 3. Reviewer Notes Textarea
+  const noteWrap = element('div', 'review-note-wrap');
+  const noteArea = element('textarea', 'review-note-input');
+  noteArea.placeholder = 'Reviewer feedback or notes (persisted locally)…';
+  noteArea.value = review.note || '';
+  noteArea.rows = 2;
+  noteWrap.append(noteArea);
+
+  const noteMeta = element('div', 'review-note-meta');
+  const saveIndicator = element('span', 'save-indicator', '● LocalStorage & Archive active');
+  noteMeta.append(saveIndicator);
+  noteWrap.append(noteMeta);
+  cell.append(noteWrap);
+
+  // Event handler: save note on input & blur
+  noteArea.addEventListener('input', () => {
+    saveNote(concept.id, noteArea.value, versionNum);
+    saveIndicator.textContent = '● Saved to LocalStorage';
+    // If already in archive, update archive record
+    const cur = getReview(concept.id, versionNum);
+    if (result?.svg && cur.decision !== 'pending') {
+      archiveDiagram({
+        conceptId: concept.id,
+        conceptName: concept.name,
+        version: versionNum,
+        decision: cur.decision,
+        note: noteArea.value,
+        svg: result.svg,
+        result,
+      }).then(() => renderArchiveSection());
+    }
+  });
+
+  // Event handler: Approve
+  approveBtn.addEventListener('click', async () => {
+    const note = noteArea.value.trim();
+    saveDecision(concept.id, 'accepted', versionNum, note);
+
+    // UI updates
+    approveBtn.classList.add('selected');
+    rejectBtn.classList.remove('selected');
+    statusBadge.className = 'review-decision-badge accepted';
+    statusBadge.textContent = '✓ ACCEPTED';
+    saveIndicator.textContent = '● Decision & Diagram Archived';
+
+    // Save to IndexedDB Archive
+    if (result?.svg) {
+      await archiveDiagram({
+        conceptId: concept.id,
+        conceptName: concept.name,
+        version: versionNum,
+        decision: 'accepted',
+        note,
+        svg: result.svg,
+        result,
+      });
+    }
+
+    updateMetrics(currentConcepts, currentResults);
+    renderArchiveSection();
+
+    try {
+      saveReviewToServer(concept.id, 'approved', note, versionNum).catch(() => {});
+    } catch (_) {}
+  });
+
+  // Event handler: Reject
+  rejectBtn.addEventListener('click', async () => {
+    const note = noteArea.value.trim();
+    saveDecision(concept.id, 'rejected', versionNum, note);
+
+    // UI updates
+    rejectBtn.classList.add('selected');
+    approveBtn.classList.remove('selected');
+    statusBadge.className = 'review-decision-badge rejected';
+    statusBadge.textContent = '✕ REJECTED';
+    saveIndicator.textContent = '● Rejection & Diagram Archived';
+
+    // Save to IndexedDB Archive
+    if (result?.svg) {
+      await archiveDiagram({
+        conceptId: concept.id,
+        conceptName: concept.name,
+        version: versionNum,
+        decision: 'rejected',
+        note,
+        svg: result.svg,
+        result,
+      });
+    }
+
+    updateMetrics(currentConcepts, currentResults);
+    renderArchiveSection();
+
+    try {
+      saveReviewToServer(concept.id, 'rejected', note, versionNum).catch(() => {});
+    } catch (_) {}
+  });
+
+  // 4. Primary Action: REGENERATE DIAGRAM
   const regenBtn = element('button', 'regen-feedback-button primary-regen', '↻ REGENERATE DIAGRAM');
   regenBtn.type = 'button';
   regenBtn.id = `regen-btn-${concept.id}`;
-  regenBtn.title = `Regenerate ${concept.name} using Gemini 3.5 Flash-Lite`;
+  regenBtn.title = `Regenerate ${concept.name} using Gemini 3.5 Flash-Lite with feedback`;
   cell.append(regenBtn);
-
-  const statusNote = element('span', 'review-saved', isPass ? `v${versionNum} · VALIDATED` : (result?.status || 'AWAITING GENERATION'));
-  cell.append(statusNote);
 
   regenBtn.addEventListener('click', async () => {
     regenBtn.disabled = true;
     regenBtn.textContent = 'Regenerating…';
-    statusNote.textContent = 'Calling Gemini 3.5 Flash-Lite…';
+    saveIndicator.textContent = 'Calling Gemini with feedback…';
 
     try {
       const activeModel = 'gemini-3.5-flash-lite';
-      const promptFeedback = 'Regenerate diagram ensuring visible, prominent animations and exact geometric accuracy.';
+      const promptFeedback = noteArea.value.trim() || 'Regenerate diagram ensuring visible, prominent animations and exact geometric accuracy.';
       const res = await regenerateWithFeedback(concept.id, promptFeedback, activeModel, versionNum);
       if (res.result) {
         const idx = currentResults.findIndex(r => r.concept_id === concept.id);
@@ -531,49 +679,41 @@ function createReviewCell(concept, result) {
         openInspectorModal(concept, res.result);
       }
     } catch (err) {
-      statusNote.textContent = `Regeneration failed: ${err.message}. Previous diagram preserved.`;
+      saveIndicator.textContent = `Regeneration failed: ${err.message}. Previous preserved.`;
       regenBtn.disabled = false;
       regenBtn.textContent = '↻ REGENERATE DIAGRAM';
     }
   });
 
-  cell.append(regenBtn);
-  cell.append(statusNote);
-
   return cell;
 }
 
 export function calculateTelemetry(concepts, results) {
-  // 1. Genuine persisted generation attempts: any result where status !== 'NOT_GENERATED' (does NOT require SVG)
   const attempts = results.filter(result => result && result.status && result.status !== 'NOT_GENERATED');
-
-  // 2. Diagrams ready: ONLY valid final PASS result with SVG exists
   const readyResults = results.filter(result => result && result.status === 'PASS' && Boolean(result.svg));
   const ready = readyResults.length;
 
-  // 3. Count passed and failed requests separately
   const passedResults = attempts.filter(result => result.status === 'PASS');
   const failedResults = attempts.filter(result => result.status === 'FAIL' || result.status === 'ERROR');
 
-  // 4. Retries and repairs across ALL genuine attempts (does NOT require SVG)
   const validationRepairs = attempts.reduce((sum, result) => sum + (result.retries?.validation_retries || 0), 0);
   const apiRetries = attempts.reduce((sum, result) => sum + (result.retries?.api_retries || 0), 0);
 
-  // 5. Retries and repairs for failed requests counted separately
   const failedValidationRepairs = failedResults.reduce((sum, result) => sum + (result.retries?.validation_retries || 0), 0);
   const failedApiRetries = failedResults.reduce((sum, result) => sum + (result.retries?.api_retries || 0), 0);
   const passedValidationRepairs = passedResults.reduce((sum, result) => sum + (result.retries?.validation_retries || 0), 0);
   const passedApiRetries = passedResults.reduce((sum, result) => sum + (result.retries?.api_retries || 0), 0);
 
-  // 6. Quality gate checks (from attempted results where checks exist)
   const checks = attempts.flatMap(result => Object.values(result.checks || {}));
   const passedChecks = checks.filter(check => check?.passed).length;
 
-  // 7. Latency
   const latencies = attempts.map(result => result.latency_ms).filter(Number.isFinite);
   const averageLatency = latencies.length
     ? `${Math.round(latencies.reduce((sum, value) => sum + value, 0) / latencies.length)} ms`
     : '—';
+
+  // Review status counts from LocalStorage
+  const reviewCounts = getReviewCounts(concepts, results);
 
   return {
     ready,
@@ -590,6 +730,9 @@ export function calculateTelemetry(concepts, results) {
     passedChecks,
     totalChecks: checks.length,
     averageLatency,
+    acceptedCount: reviewCounts.accepted,
+    rejectedCount: reviewCounts.rejected,
+    pendingCount: reviewCounts.pending,
   };
 }
 
@@ -606,42 +749,149 @@ export function updateMetrics(concepts, results) {
   const signalRetries = document.getElementById('signal-retries');
   if (signalRetries) signalRetries.textContent = String(t.apiRetries).padStart(2, '0');
 
-  // Review Board metrics grid
-  const metricPass = document.getElementById('metric-pass');
-  if (metricPass) metricPass.textContent = `${t.passedCount} / ${t.totalConcepts}`;
+  // Review Board 6 Required Metrics
+  const metricTotal = document.getElementById('metric-total');
+  if (metricTotal) metricTotal.textContent = String(t.totalConcepts).padStart(2, '0');
 
-  const metricPassSub = document.getElementById('metric-pass-sub');
-  if (metricPassSub) {
-    metricPassSub.textContent = t.failedCount > 0
-      ? `${t.failedCount} failed request${t.failedCount === 1 ? '' : 's'}`
-      : 'Only generated results are counted';
-  }
+  const metricPass = document.getElementById('metric-pass');
+  if (metricPass) metricPass.textContent = `${t.ready} / ${t.totalConcepts}`;
 
   const metricChecks = document.getElementById('metric-checks');
   if (metricChecks) metricChecks.textContent = `${t.passedChecks} / ${t.totalChecks}`;
 
-  const metricRepairs = document.getElementById('metric-repairs');
-  if (metricRepairs) metricRepairs.textContent = String(t.validationRepairs);
+  const metricAccepted = document.getElementById('metric-accepted');
+  if (metricAccepted) metricAccepted.textContent = String(t.acceptedCount);
 
-  const metricRepairsSub = document.getElementById('metric-repairs-sub');
-  if (metricRepairsSub) {
-    metricRepairsSub.textContent = t.failedValidationRepairs > 0
-      ? `${t.passedValidationRepairs} passed · ${t.failedValidationRepairs} in failed`
-      : 'Corrective generation repairs';
+  const metricRejected = document.getElementById('metric-rejected');
+  if (metricRejected) metricRejected.textContent = String(t.rejectedCount);
+
+  const metricPending = document.getElementById('metric-pending');
+  if (metricPending) metricPending.textContent = String(t.pendingCount);
+}
+
+export async function renderArchiveSection() {
+  if (typeof document === 'undefined') return;
+  const grid = document.getElementById('archive-grid');
+  if (!grid) return;
+
+  const counts = await getArchiveCounts();
+  const countAll = document.getElementById('archive-count-all');
+  if (countAll) countAll.textContent = String(counts.total);
+  const countAcc = document.getElementById('archive-count-accepted');
+  if (countAcc) countAcc.textContent = String(counts.accepted);
+  const countRej = document.getElementById('archive-count-rejected');
+  if (countRej) countRej.textContent = String(counts.rejected);
+
+  const filter = currentArchiveFilter === 'all' ? null : currentArchiveFilter;
+  const items = await getAllArchivedDiagrams(filter);
+
+  grid.replaceChildren();
+
+  if (items.length === 0) {
+    const empty = element('div', 'archive-empty-state');
+    empty.append(element('strong', '', 'No archived diagrams in this category.'));
+    empty.append(element('p', '', 'Review diagrams above and click Approve or Reject to preserve their animated SVG markup in the local IndexedDB archive.'));
+    grid.append(empty);
+    return;
   }
 
-  const metricRetries = document.getElementById('metric-retries');
-  if (metricRetries) metricRetries.textContent = String(t.apiRetries);
+  for (const item of items) {
+    const card = element('div', 'archive-card');
 
-  const metricRetriesSub = document.getElementById('metric-retries-sub');
-  if (metricRetriesSub) {
-    metricRetriesSub.textContent = t.failedApiRetries > 0
-      ? `${t.passedApiRetries} passed · ${t.failedApiRetries} in failed`
-      : 'Transient 429 / 503 backoff retries';
+    const topBar = element('div', 'archive-card-top');
+    const titleGroup = element('div', 'archive-card-title');
+    titleGroup.append(element('strong', '', item.concept_name));
+    titleGroup.append(element('span', 'version-tag', `v${item.version}`));
+    topBar.append(titleGroup);
+
+    const badge = element('span', `review-decision-badge ${item.decision}`, item.decision === 'accepted' ? '✓ APPROVED' : '✕ REJECTED');
+    topBar.append(badge);
+    card.append(topBar);
+
+    // SVG thumbnail / interactive frame
+    const frame = element('div', 'archive-thumb-frame');
+    const iframe = element('iframe', 'archive-thumb-iframe');
+    iframe.title = `${item.concept_name} archived SVG`;
+    iframe.setAttribute('sandbox', '');
+    iframe.setAttribute('loading', 'lazy');
+    const blob = new Blob([item.svg], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    iframe.src = url;
+    iframe.addEventListener('load', () => URL.revokeObjectURL(url), { once: true });
+    frame.append(iframe);
+    card.append(frame);
+
+    // Note and metadata
+    const body = element('div', 'archive-card-body');
+    if (item.note) {
+      body.append(element('p', 'archive-note', `"${item.note}"`));
+    } else {
+      body.append(element('p', 'archive-note muted', 'No reviewer note entered.'));
+    }
+
+    const meta = element('div', 'archive-meta-row');
+    const dateStr = item.archived_at ? new Date(item.archived_at).toLocaleString() : 'Recently';
+    meta.append(element('span', 'archive-date', `Saved: ${dateStr}`));
+    if (item.checks_summary) {
+      meta.append(element('span', 'archive-checks', item.checks_summary));
+    }
+    body.append(meta);
+    card.append(body);
+
+    // Actions
+    const actions = element('div', 'archive-card-actions');
+    const inspectBtn = element('button', 'preview-link', 'INSPECT ⛶');
+    inspectBtn.type = 'button';
+    inspectBtn.addEventListener('click', () => {
+      const concept = currentConcepts.find(c => c.id === item.concept_id) || { id: item.concept_id, name: item.concept_name, number: 1 };
+      openInspectorModal(concept, {
+        svg: item.svg,
+        model: item.model,
+        version: item.version,
+        checks: {},
+      });
+    });
+
+    const svgBtn = element('button', 'preview-link', 'SVG ↓');
+    svgBtn.type = 'button';
+    svgBtn.addEventListener('click', () => {
+      downloadSvg(item.svg, `${item.concept_name}_v${item.version}`);
+    });
+
+    const pngBtn = element('button', 'preview-link', 'PNG ↓');
+    pngBtn.type = 'button';
+    pngBtn.addEventListener('click', async () => {
+      pngBtn.disabled = true;
+      const old = pngBtn.textContent;
+      pngBtn.textContent = 'Preparing…';
+      try {
+        await downloadPng(item.svg, `${item.concept_name}_v${item.version}`);
+      } catch (err) {
+        if (typeof window !== 'undefined' && window.alert) window.alert(err.message);
+      } finally {
+        pngBtn.disabled = false;
+        pngBtn.textContent = old;
+      }
+    });
+
+    actions.append(inspectBtn, svgBtn, pngBtn);
+    card.append(actions);
+
+    grid.append(card);
   }
+}
 
-  const metricLatency = document.getElementById('metric-latency');
-  if (metricLatency) metricLatency.textContent = t.averageLatency;
+export function setupArchiveFilterButtons() {
+  if (typeof document === 'undefined') return;
+  const buttons = document.querySelectorAll('.archive-filter-btn');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentArchiveFilter = btn.getAttribute('data-filter') || 'all';
+      renderArchiveSection();
+    });
+  });
 }
 
 function createComparisonColumn(modelId, modelName, role, badgeClass, result, isActiveTarget) {
@@ -670,11 +920,11 @@ function createComparisonColumn(modelId, modelName, role, badgeClass, result, is
   const totalChecks = checks.length || 6;
 
   const stats = element('div', 'col-stats-list');
-  
+
   const box1 = element('div', 'col-stat-box');
   box1.append(element('span', 'col-stat-label', 'CHECKS'));
   box1.append(element('span', 'col-stat-value', `${passedChecks}/${totalChecks}`));
-  
+
   const box2 = element('div', 'col-stat-box');
   box2.append(element('span', 'col-stat-label', 'LATENCY'));
   box2.append(element('span', 'col-stat-value', typeof result.latency_ms === 'number' ? `${Math.round(result.latency_ms)} ms` : '—'));
@@ -685,7 +935,7 @@ function createComparisonColumn(modelId, modelName, role, badgeClass, result, is
 
   const box4 = element('div', 'col-stat-box');
   box4.append(element('span', 'col-stat-label', 'EST. COST'));
-  box4.append(element('span', 'col-stat-value', formatCost(result)));
+  box4.append(element('span', 'col-stat-value', formatStandardCost(result)));
 
   stats.append(box1, box2, box3, box4);
   col.append(stats);
@@ -716,12 +966,10 @@ export function renderComparisonGrid(concepts, results, activeModelId = 'gemini-
 
     const cols = element('div', 'comparison-cols');
 
-    // Model 1: Gemini 3.5 Flash-Lite
     const liteResult = results.find(item => item.concept_id === concept.id && item.model === 'gemini-3.5-flash-lite')
       || (results.find(item => item.concept_id === concept.id && (!item.model || item.model.includes('3.5'))));
     cols.append(createComparisonColumn('gemini-3.5-flash-lite', 'Gemini 3.5 Flash-Lite', 'Efficiency', 'lite', liteResult, activeModelId === 'gemini-3.5-flash-lite'));
 
-    // Model 2: Gemini 3.8 Flash
     const flashResult = results.find(item => item.concept_id === concept.id && item.model === 'gemini-3.8-flash');
     cols.append(createComparisonColumn('gemini-3.8-flash', 'Gemini 3.8 Flash', 'Advanced', 'flash', flashResult, activeModelId === 'gemini-3.8-flash'));
 
@@ -734,24 +982,26 @@ export function renderRows(concepts, results, activeModelId = 'gemini-3.5-flash-
   currentConcepts = concepts;
   currentResults = results;
   const body = document.getElementById('results-body');
-  body.replaceChildren();
+  if (body) {
+    body.replaceChildren();
 
-  for (const concept of concepts) {
-    const result = results.find(item => item.concept_id === concept.id);
-    const row = document.createElement('tr');
-    row.append(
-      createConceptCell(concept),
-      createIllustrationCell(concept, result),
-      createChecksCell(result),
-      createUsageCell(result),
-      createReviewCell(concept, result),
-    );
-    body.append(row);
+    for (const concept of concepts) {
+      const result = results.find(item => item.concept_id === concept.id);
+      const row = document.createElement('tr');
+      row.append(
+        createNumberCell(concept),
+        createConceptCell(concept),
+        createIllustrationCell(concept, result),
+        createChecksCell(result),
+        createUsageCell(result),
+        createReviewCell(concept, result),
+      );
+      body.append(row);
+    }
   }
 
   updateMetrics(concepts, results);
 
-  // Merge results and modelRuns into comparison set where each (concept_id, model) is distinct
   const comparisonRuns = [...results];
   for (const run of modelRuns) {
     const idx = comparisonRuns.findIndex(r => r.concept_id === run.concept_id && r.model === run.model);
@@ -763,4 +1013,6 @@ export function renderRows(concepts, results, activeModelId = 'gemini-3.5-flash-
   }
   renderComparisonGrid(concepts, comparisonRuns, activeModelId);
   setupInspectorModal();
+  setupArchiveFilterButtons();
+  renderArchiveSection();
 }
