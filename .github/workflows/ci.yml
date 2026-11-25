@@ -26,7 +26,10 @@ jobs:
       - name: Compile Python modules
         run: python -m compileall -q backend scripts
       - name: Run backend tests
-        run: pytest -q backend/tests
+        run: |
+          python -m uvicorn app.main:app --app-dir backend --port 8000 &
+          sleep 2
+          pytest -q backend/tests
 
   frontend-tests:
     name: Frontend tests and syntax

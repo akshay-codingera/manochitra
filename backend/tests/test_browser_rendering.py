@@ -11,12 +11,21 @@ Verifies:
 from __future__ import annotations
 
 import asyncio
+import socket
 from pathlib import Path
 import pytest
 from playwright.async_api import async_playwright
 
 from app.core.concepts import CONCEPTS, CONCEPT_BY_ID
 from conftest import make_valid_svg
+
+
+def _is_server_running(host: str = "127.0.0.1", port: int = 8000) -> bool:
+    try:
+        with socket.create_connection((host, port), timeout=0.2):
+            return True
+    except OSError:
+        return False
 
 
 def _html_wrap(svg: str, theme: str = "daylight") -> str:
@@ -219,10 +228,10 @@ async def test_browser_dashboard_ui_interaction():
         ))
 
         # Navigate to the local running app (or local file URI if admin policies restrict http ports)
-        try:
+        if _is_server_running():
             response = await page.goto("http://127.0.0.1:8000/", timeout=8000)
             assert response and response.status == 200, f"Dashboard returned status {response.status if response else None}"
-        except Exception:
+        else:
             index_uri = (ROOT / "frontend" / "index.html").as_uri()
             await page.goto(index_uri, timeout=8000)
 
@@ -266,10 +275,10 @@ async def test_browser_model_instrument_selector():
         page = await browser.new_page(viewport={"width": 1400, "height": 900})
 
         ROOT = Path(__file__).resolve().parents[2]
-        try:
+        if _is_server_running():
             response = await page.goto("http://127.0.0.1:8000/", timeout=5000)
             assert response and response.status == 200
-        except Exception:
+        else:
             index_uri = (ROOT / "frontend" / "index.html").as_uri()
             await page.goto(index_uri, timeout=5000)
 
@@ -298,10 +307,10 @@ async def test_browser_comparison_mode_view():
         page = await browser.new_page(viewport={"width": 1400, "height": 900})
 
         ROOT = Path(__file__).resolve().parents[2]
-        try:
+        if _is_server_running():
             response = await page.goto("http://127.0.0.1:8000/", timeout=5000)
             assert response and response.status == 200
-        except Exception:
+        else:
             index_uri = (ROOT / "frontend" / "index.html").as_uri()
             await page.goto(index_uri, timeout=5000)
 
