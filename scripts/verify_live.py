@@ -18,7 +18,7 @@ async def verify_live():
         print(f'Page title: {title}')
         print(f'Heading: {heading}')
         assert 'manochitra' in title.lower()
-        assert '5 Diagrams' in heading
+        assert 'Make science' in heading or 'visible' in heading
         
         # 3. Check concept rows
         rows = await page.locator('#results-body tr').all()
