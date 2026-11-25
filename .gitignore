@@ -26,6 +26,7 @@ build/
 reports/
 node_modules/
 *.log
+.vercel/
 
 # Internal Guides, Prompts & Local Test Plans
 ANTIGRAVITY_PHASED_BUILD_GUIDE.md
