@@ -439,7 +439,17 @@ function createChecksCell(result) {
 
 function createUsageCell(result) {
   const cell = element('td', 'usage-cell');
-  cell.append(element('strong', 'usage-cost', formatCost(result)));
+  const versionNum = result?.version || 1;
+  const isPass = result?.status === 'PASS';
+
+  // Cost and Version Badge row: flex layout so version appears beside cost without overlap
+  const costRow = element('div', 'cost-badge-row');
+  costRow.append(element('strong', 'usage-cost', formatCost(result)));
+  const verBadge = element('span', 'version-tag', `v${versionNum}`);
+  verBadge.classList.add(isPass ? 'approved' : 'pending');
+  costRow.append(verBadge);
+  cell.append(costRow);
+
   const input = result?.usage?.input_tokens;
   const output = result?.usage?.output_tokens;
   const usage = input === undefined ? 'Tokens pending' : `${input} in · ${output} out`;
@@ -484,25 +494,22 @@ function createReviewCell(concept, result) {
   const versionsCount = result?.versions_count || (result?.versions?.length || 1);
   const isPass = result?.status === 'PASS';
 
-  // Version header bar
-  const verHead = element('div', 'review-version-bar');
-  const verBadge = element('span', 'version-tag', `v${versionNum}`);
-  verBadge.classList.add(isPass ? 'approved' : 'pending');
-  verHead.append(verBadge);
-
   if (versionsCount > 1) {
-    const verCountLabel = element('span', 'version-selector-label', `${versionsCount} version${versionsCount > 1 ? 's' : ''}`);
+    const verHead = element('div', 'review-version-bar');
+    const verCountLabel = element('span', 'version-selector-label', `${versionsCount} versions recorded`);
     verHead.append(verCountLabel);
+    cell.append(verHead);
   }
-  cell.append(verHead);
 
   // Single Primary Action: REGENERATE DIAGRAM
   const regenBtn = element('button', 'regen-feedback-button primary-regen', '↻ REGENERATE DIAGRAM');
   regenBtn.type = 'button';
   regenBtn.id = `regen-btn-${concept.id}`;
   regenBtn.title = `Regenerate ${concept.name} using Gemini 3.5 Flash-Lite`;
+  cell.append(regenBtn);
 
   const statusNote = element('span', 'review-saved', isPass ? `v${versionNum} · VALIDATED` : (result?.status || 'AWAITING GENERATION'));
+  cell.append(statusNote);
 
   regenBtn.addEventListener('click', async () => {
     regenBtn.disabled = true;
