@@ -19,6 +19,36 @@ from app.services.prompt_builder import (
 client = TestClient(app)
 
 
+@pytest.fixture(autouse=True)
+def isolate_workflow_repositories(tmp_path, monkeypatch):
+    """Provide isolated repositories for workflow tests under tmp_path/isolated."""
+    app_data = tmp_path / "isolated"
+    app_data.mkdir(parents=True, exist_ok=True)
+    from app.api import routes
+
+    tmp_results = ResultsRepository(app_data / "results.json")
+    tmp_versions = VersionsRepository(app_data / "versions.json")
+    tmp_reviews = ReviewsRepository(app_data / "reviews.json")
+    tmp_runs = ModelRunsRepository(app_data / "model_runs.json")
+
+    from conftest import make_valid_svg
+    for cid in ["pythagoras", "circle", "series-circuit", "photosynthesis", "states-of-matter"]:
+        concept = CONCEPT_BY_ID[cid]
+        tmp_results.upsert({
+            "concept_id": cid,
+            "status": "PASS",
+            "model": "gemini-3.5-flash-lite",
+            "svg": make_valid_svg(concept),
+            "version": 1,
+        })
+    tmp_versions.seed_initial_versions_from_results(tmp_results.all())
+
+    monkeypatch.setattr(routes, "repository", tmp_results)
+    monkeypatch.setattr(routes, "versions_repository", tmp_versions)
+    monkeypatch.setattr(routes, "reviews_repository", tmp_reviews)
+    monkeypatch.setattr(routes, "model_runs_repository", tmp_runs)
+
+
 def test_versions_repository_preserves_versions_and_increments_number(tmp_path):
     repo = VersionsRepository(tmp_path / "versions.json")
     assert repo.get_versions("pythagoras") == []

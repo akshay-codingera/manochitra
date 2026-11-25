@@ -234,16 +234,23 @@ def test_get_api_models_endpoint():
 
 
 # 14. Diagnostics without secrets
-def test_diagnostics_without_secrets():
+def test_diagnostics_without_secrets(monkeypatch):
+    test_secret = "fake-gemini-secret-for-test-only"
+    monkeypatch.setattr(config, "GEMINI_API_KEY", test_secret)
+    from app.api import routes
+    monkeypatch.setattr(routes.pipeline.client, "api_key", test_secret)
+
     response = client.get("/api/diagnostics")
     assert response.status_code == 200
     diag = response.json()
     assert "supported_models" in diag
     assert "gemini-3.5-flash-lite" in diag["supported_models"]
     assert "gemini-3.8-flash" in diag["supported_models"]
-    assert "api_key" not in str(diag).lower() or diag.get("api_key_configured") is not None
-    if config.GEMINI_API_KEY:
-        assert config.GEMINI_API_KEY not in str(diag)
+    assert diag.get("api_key_configured") is True
+    # Verify the fake secret does not appear anywhere in the response body
+    assert test_secret not in response.text
+    assert test_secret not in str(diag)
+    assert "api_key" not in diag
 
 
 # API POST generate validation tests

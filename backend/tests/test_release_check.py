@@ -20,6 +20,13 @@ from app.validators.svg_validator import validate_svg
 from conftest import make_valid_svg
 
 
+@pytest.fixture(autouse=True)
+def ensure_tmp_path_ready(tmp_path: Path) -> Path:
+    """Ensure the isolated temporary directory and its parents exist on all platforms."""
+    tmp_path.mkdir(parents=True, exist_ok=True)
+    return tmp_path
+
+
 def _build_valid_results_payload() -> dict:
     results = []
     for concept in CONCEPTS:
