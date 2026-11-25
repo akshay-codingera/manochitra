@@ -18,6 +18,27 @@ The current implementation covers five GCSE-level concepts:
 
 ---
 
+## Interface Preview
+
+MANOCHITRA includes two visual themes. The same dashboard and science diagrams are available in both modes.
+
+<div align="center">
+  <img src="screenshots/manochitra-daylight.png"
+       alt="MANOCHITRA dashboard in Daylight mode"
+       width="49%" />
+  <img src="screenshots/manochitra-night.png"
+       alt="MANOCHITRA dashboard in Night mode"
+       width="49%" />
+</div>
+
+<p align="center">
+  <sub>Daylight / Light mode</sub>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <sub>Night / Dark mode</sub>
+</p>
+
+---
+
 ## 1. The problem
 
 Science diagrams are often used to explain ideas that are difficult to understand through text alone. However, generating these diagrams automatically introduces a few problems.
